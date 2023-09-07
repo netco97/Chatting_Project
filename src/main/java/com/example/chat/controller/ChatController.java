@@ -1,26 +1,22 @@
 package com.example.chat.controller;
 
-import com.example.chat.dto.ChatRoomDTO;
-import com.example.chat.service.ChatService;
+import com.example.chat.dto.ChatMessage;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.messaging.handler.annotation.MessageMapping;
+import org.springframework.messaging.simp.SimpMessageSendingOperations;
+import org.springframework.web.bind.annotation.RestController;
 
-import java.util.List;
-
-@RequiredArgsConstructor
 @RestController
-@RequestMapping("/chat")
+@RequiredArgsConstructor
 public class ChatController {
 
-    private final ChatService chatService;
+    private final SimpMessageSendingOperations sendingOperations;
 
-    @PostMapping
-    public ChatRoomDTO createRoom(@RequestParam String name){
-        return chatService.createRoom(name);
-    }
-
-    @GetMapping
-    public List<ChatRoomDTO> findAllRoom(){
-        return chatService.findAllRoom();
+    @MessageMapping("/chat/message")
+    public void enter(ChatMessage message) {
+        if (ChatMessage.MessageType.ENTER.equals(message.getType())) {
+            message.setMessage(message.getSender()+"님이 입장하였습니다.");
+        }
+        sendingOperations.convertAndSend("/sub/chat/room/"+message.getRoomId(),message);
     }
 }

@@ -1,53 +1,42 @@
 package com.example.chat.service;
 
-import com.example.chat.dto.ChatRoomDTO;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.example.chat.dto.ChatRoom;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-import org.springframework.web.socket.TextMessage;
-import org.springframework.web.socket.WebSocketSession;
 
 import javax.annotation.PostConstruct;
-import java.io.IOException;
 import java.util.*;
 
-@Slf4j
-@RequiredArgsConstructor
 @Service
+@RequiredArgsConstructor
 public class ChatService {
 
-    private final ObjectMapper objectMapper;
-    private Map<String, ChatRoomDTO> chatRoomDTOs; //일단 외부저장소 대신 Map
+    private Map<String, ChatRoom> chatRooms;
 
     @PostConstruct
-    private void init(){
-        chatRoomDTOs = new LinkedHashMap<>();
+    //의존관게 주입완료되면 실행되는 코드
+    private void init() {
+        chatRooms = new LinkedHashMap<>();
     }
 
-    public List<ChatRoomDTO> findAllRoom(){
-        return new ArrayList<>(chatRoomDTOs.values());
+    //채팅방 불러오기
+    public List<ChatRoom> findAllRoom() {
+        //채팅방 최근 생성 순으로 반환
+        List<ChatRoom> result = new ArrayList<>(chatRooms.values());
+        Collections.reverse(result);
+
+        return result;
     }
 
-    public ChatRoomDTO findRoomById(String roomId){
-        return chatRoomDTOs.get(roomId);
+    //채팅방 하나 불러오기
+    public ChatRoom findById(String roomId) {
+        return chatRooms.get(roomId);
     }
 
-    public ChatRoomDTO createRoom(String name){ //채팅방 생성
-        String randomId = UUID.randomUUID().toString();
-        ChatRoomDTO chatRoomDTO = ChatRoomDTO.builder()
-                .roomId(randomId)
-                .name(name)
-                .build();
-        chatRoomDTOs.put(randomId, chatRoomDTO);
-        return chatRoomDTO;
-    }
-
-    public <T> void sendMessage(WebSocketSession session, T message){
-        try{
-            session.sendMessage(new TextMessage(objectMapper.writeValueAsString(message)));
-        }catch (IOException e){
-            log.error(e.getMessage(), e);
-        }
+    //채팅방 생성
+    public ChatRoom createRoom(String name) {
+        ChatRoom chatRoom = ChatRoom.create(name);
+        chatRooms.put(chatRoom.getRoomId(), chatRoom);
+        return chatRoom;
     }
 }
