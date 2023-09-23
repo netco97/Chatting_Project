@@ -1,7 +1,6 @@
 HELP.md
 .gradle
 build/
-.src/main/java/com/example/chat/service/RestJsonService.java
 !gradle/wrapper/gradle-wrapper.jar
 !**/src/main/**/build/
 !**/src/test/**/build/

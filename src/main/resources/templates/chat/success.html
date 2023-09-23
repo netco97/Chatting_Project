@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Kakao Login</title>
+</head>
+<body>
+<h2>이메일</h2>
+<p th:text="${email}">테스트</p><br>
+
+<h2>로그아웃</h2>
+<a href="https://kauth.kakao.com/oauth/logout?client_id=41edb156a54ce9db651ea3f661053d5d&logout_redirect_uri=http://localhost:8080/chat/room">로그아웃</a>
+</body>
+</html>
