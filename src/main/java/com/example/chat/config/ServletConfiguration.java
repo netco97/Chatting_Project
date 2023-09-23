@@ -11,7 +11,6 @@ import org.springframework.context.annotation.Configuration;
 
 @Configuration //다중포트 띄우는 config
 public class ServletConfiguration {
-
     @Value("${server.port.http}")
     private int serverPortHttp;
 
