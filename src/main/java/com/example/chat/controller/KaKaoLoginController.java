@@ -47,7 +47,7 @@ public class KaKaoLoginController {
 
         System.out.println(email);
 
-        return "/chat/success";
+        return "/chat/room";
     }
 
 }
