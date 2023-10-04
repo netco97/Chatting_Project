@@ -2,6 +2,7 @@ package com.example.chat.controller;
 
 import com.example.chat.service.GetUserInfoService;
 import com.example.chat.service.RestJsonService;
+import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -38,7 +39,9 @@ public class KaKaoLoginController {
 
         //유저의 Email 추출
         JSONObject kakaoAccountJsonObject = (JSONObject)userInfoJsonObject.get("kakao_account");
-        String email = kakaoAccountJsonObject.get("email").toString();
+        System.out.println(kakaoAccountJsonObject);
+        JSONObject profile = (JSONObject) kakaoAccountJsonObject.get("profile");
+        String email = profile.get("nickname").toString();
 
 
 
