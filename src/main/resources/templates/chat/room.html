@@ -21,13 +21,7 @@
         </div>
     </div>
     <div>
-        <a href="https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=41edb156a54ce9db651ea3f661053d5d&redirect_uri=http%3a%2f%2flocalhost%3a8080%2foauth%2fkakao">
-            요청 URI
-        </a>
-        <h2>이메일</h2>
-        <p th:text="${email}">테스트</p><br>
-        <h2>로그아웃</h2>
-        <a href="https://kauth.kakao.com/oauth/logout?client_id=41edb156a54ce9db651ea3f661053d5d&logout_redirect_uri=http://localhost:8080/chat/room">로그아웃</a>
+        <a href="/login">로그인</a>
     </div>
     <div class="input-group">
         <div class="input-group-prepend">
@@ -84,8 +78,8 @@
                 }
             },
             enterRoom: function(roomId) {
-                //var sender = prompt('대화명을 입력해 주세요.');
-                var sender = "[[${email}]]";
+                var sender = prompt('대화명을 입력해 주세요.');
+                //var sender = "[[${email}]]";
 
                 if(sender !== "") {
                     localStorage.setItem('wschat.sender',sender);
