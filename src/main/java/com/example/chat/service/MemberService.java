@@ -9,14 +9,23 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.HashMap;
 
+import com.example.chat.Repository.MemberRepository;
+import com.example.chat.dto.KakaoDTO;
+import com.example.chat.entity.User;
 import com.google.gson.JsonObject;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
 
+
 @Service
+@RequiredArgsConstructor
 public class MemberService {
+
+    private final MemberRepository memberRepository;
+
 
     public String getAccessToken (String authorize_code) {
         String access_Token = "";
@@ -59,8 +68,10 @@ public class MemberService {
             System.out.println("response body : " + result);
 
             // Gson 라이브러리에 포함된 클래스로 JSON파싱 객체 생성
-            JsonParser parser = new JsonParser();
-            JsonElement element = parser.parse(result);
+            /*JsonParser parser = new JsonParser(); 이거 deprecated일어남 밑에 처럼 바꾸기
+            JsonElement element = parser.parse(result);*/
+
+            JsonElement element = JsonParser.parseString(result);
 
             access_Token = element.getAsJsonObject().get("access_token").getAsString();
             refresh_Token = element.getAsJsonObject().get("refresh_token").getAsString();
@@ -81,6 +92,9 @@ public class MemberService {
         // 요청하는 클라이언트마다 가진 정보가 다를 수 있기에 HashMap타입으로 선언
         HashMap<String, Object> userInfo = new HashMap<String, Object>();
         String reqURL = "https://kapi.kakao.com/v2/user/me";
+        String id = "";
+        String nickname = "";
+        String email = "";
         try {
             URL url = new URL(reqURL);
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
@@ -102,21 +116,30 @@ public class MemberService {
             }
             System.out.println("response body : " + result);
 
-            JsonParser parser = new JsonParser();
-            JsonElement element = parser.parse(result);
+            JsonElement element = JsonParser.parseString(result);
 
             JsonObject properties = element.getAsJsonObject().get("properties").getAsJsonObject();
             JsonObject kakao_account = element.getAsJsonObject().get("kakao_account").getAsJsonObject();
 
-            String nickname = properties.getAsJsonObject().get("nickname").getAsString();
-            String email = kakao_account.getAsJsonObject().get("email").getAsString();
 
+            id = element.getAsJsonObject().get("id").getAsString();
+            nickname = properties.getAsJsonObject().get("nickname").getAsString();
+            email = kakao_account.getAsJsonObject().get("email").getAsString();
+
+            userInfo.put("id", id);
             userInfo.put("nickname", nickname);
             userInfo.put("email", email);
 
         } catch (IOException e) {
             e.printStackTrace();
         }
+
+
+        KakaoDTO kakaoDTO = new KakaoDTO(Long.parseLong(id), nickname, email);
+        User user = User.toUserEntity(kakaoDTO);
+        memberRepository.save(user);
+
         return userInfo;
     }
+
 }
