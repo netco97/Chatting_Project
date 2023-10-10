@@ -1,10 +1,14 @@
 package com.example.chat.entity;
 
 import com.example.chat.dto.KakaoDTO;
+import lombok.Getter;
+import lombok.Setter;
 
 import javax.persistence.*;
 
 @Entity
+@Getter
+@Setter
 @Table(name = "kakao_table")
 public class User {
 

@@ -7,7 +7,9 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 import com.example.chat.Repository.MemberRepository;
 import com.example.chat.dto.KakaoDTO;
@@ -25,6 +27,10 @@ import com.google.gson.JsonParser;
 public class MemberService {
 
     private final MemberRepository memberRepository;
+
+    String id = "";
+    String nickname = "";
+    String email = "";
 
 
     public String getAccessToken (String authorize_code) {
@@ -92,9 +98,7 @@ public class MemberService {
         // 요청하는 클라이언트마다 가진 정보가 다를 수 있기에 HashMap타입으로 선언
         HashMap<String, Object> userInfo = new HashMap<String, Object>();
         String reqURL = "https://kapi.kakao.com/v2/user/me";
-        String id = "";
-        String nickname = "";
-        String email = "";
+
         try {
             URL url = new URL(reqURL);
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
@@ -134,12 +138,24 @@ public class MemberService {
             e.printStackTrace();
         }
 
+
+
+        return userInfo;
+    }
+    public void save(){
         //API to DB(ENTITY)
         KakaoDTO kakaoDTO = new KakaoDTO(Long.parseLong(id), nickname, email);
         User user = User.toUserEntity(kakaoDTO);
         memberRepository.save(user);
-
-        return userInfo;
     }
 
+    // SELECT * from kakao_table;
+    public List<KakaoDTO> findAll(){
+        List<User> userList = memberRepository.findAll();
+        List<KakaoDTO> kakaoDTOList = new ArrayList<>();
+        for(User user: userList){
+            kakaoDTOList.add(KakaoDTO.toKakaoDTO(user));
+        }
+        return kakaoDTOList;
+    }
 }

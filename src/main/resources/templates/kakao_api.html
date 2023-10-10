@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>List</title>
+</head>
+<body>
+<h2>API Test</h2>
+<table>
+    <tr>
+        <th>k_number</th>
+        <th>k_name</th>
+        <th>k_email</th>
+    </tr>
+    <tr th:each="member: ${kakaoList}">
+        <td th:text="${member.k_number}"></td>
+        <td th:text="${member.k_name}"></td>
+        <td th:text="${member.k_email}"></td>
+    </tr>
+</table>
+</body>
+</html>
