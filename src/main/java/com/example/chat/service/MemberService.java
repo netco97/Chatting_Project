@@ -47,7 +47,7 @@ public class MemberService {
             sb.append("grant_type=authorization_code");
 
             sb.append("&client_id=e174dd79d6f23ded9d7887f7157b726c"); //본인이 발급받은 key
-            sb.append("&redirect_uri=http://localhost:8080/login/kakao"); // 본인이 설정한 주소
+            sb.append("&redirect_uri=http%3a%2f%2flocalhost%3a8080%2flogin%2fkakao"); // 본인이 설정한 주소(인코딩함)
 
             sb.append("&code=" + authorize_code);
             bw.write(sb.toString());
@@ -134,7 +134,7 @@ public class MemberService {
             e.printStackTrace();
         }
 
-
+        //API to DB(ENTITY)
         KakaoDTO kakaoDTO = new KakaoDTO(Long.parseLong(id), nickname, email);
         User user = User.toUserEntity(kakaoDTO);
         memberRepository.save(user);

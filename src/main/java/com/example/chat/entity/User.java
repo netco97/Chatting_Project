@@ -8,7 +8,7 @@ import javax.persistence.*;
 @Table(name = "kakao_table")
 public class User {
 
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id
     private Long k_number;
 
     @Column(nullable = false)
