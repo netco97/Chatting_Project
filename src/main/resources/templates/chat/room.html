@@ -82,8 +82,8 @@
                 //var sender = "[[${email}]]";
 
                 if(sender !== "") {
-                    localStorage.setItem('wschat.sender',sender);
-                    localStorage.setItem('wschat.roomId',roomId);
+                    localStorage.setItem('ws-stomp.sender',sender);
+                    localStorage.setItem('ws-stomp.roomId',roomId);
                     location.href="/chat/room/enter/"+roomId;
                 }
             }

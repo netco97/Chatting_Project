@@ -30,7 +30,7 @@ public class ChatRoomController {
     @PostMapping("/room")
     @ResponseBody
     public ChatRoom createRoom(@RequestParam String name) {
-        return chatService.createRoom(name);
+        return chatService.createChatRoom(name);
     }
     // 채팅방 입장 화면
     @GetMapping("/room/enter/{roomId}")
@@ -42,6 +42,6 @@ public class ChatRoomController {
     @GetMapping("/room/{roomId}")
     @ResponseBody
     public ChatRoom roomInfo(@PathVariable String roomId) {
-        return chatService.findById(roomId);
+        return chatService.findRoomById(roomId);
     }
 }
