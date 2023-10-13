@@ -1,5 +1,6 @@
 package com.example.chat.service;
 
+import com.example.chat.Repository.MemberRepository;
 import com.example.chat.dto.ChatRoom;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -32,5 +33,10 @@ public class ChatService {
         ChatRoom chatRoom = ChatRoom.create(name);
         chatRoomMap.put(chatRoom.getRoomId(), chatRoom);
         return chatRoom;
+    }
+
+    public void save(){
+        // message (json) to DB
+
     }
 }

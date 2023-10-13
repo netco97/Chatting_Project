@@ -1,6 +1,8 @@
 package com.example.chat.controller;
 
 import com.example.chat.dto.ChatMessage;
+import com.example.chat.dto.ChatRoom;
+import com.example.chat.service.ChatService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.simp.SimpMessageSendingOperations;
@@ -11,6 +13,7 @@ import org.springframework.stereotype.Controller;
 public class ChatController {
 
     private final SimpMessageSendingOperations messagingTemplate;
+    private final ChatService chatService;
 
     /**
      * websocket "/pub/chat/message"로 들어오는 메시징을 처리한다.
@@ -20,5 +23,16 @@ public class ChatController {
         if (ChatMessage.MessageType.ENTER.equals(message.getType()))
             message.setMessage(message.getSender() + "님이 입장하셨습니다.");
         messagingTemplate.convertAndSend("/sub/chat/room/" + message.getRoomId(), message);
+
+
+        System.out.println("--------------------체크용------------------");
+        System.out.println("RoomId : " + message.getRoomId());
+        System.out.println("Sendor : " + message.getSender());
+        System.out.println("Message : "+ message.getMessage());
+        System.out.println("message type : "+ message.getType());
+        System.out.println("--------------------체크용------------------");
+
+        //Message to DB
+        chatService.save();
     }
 }
