@@ -144,7 +144,14 @@ public class MemberService {
     }
     public void save(){
         //API to DB(ENTITY)
-        KakaoDTO kakaoDTO = new KakaoDTO(Long.parseLong(id), nickname, email);
+        //KakaoDTO kakaoDTO = new KakaoDTO(Long.parseLong(id), nickname, email);
+        //builder 패턴으로 바꿔봄
+        KakaoDTO kakaoDTO = KakaoDTO.
+                builder()
+                .k_number(Long.parseLong(id))
+                .k_name(nickname)
+                .k_email(email)
+                .build();
         User user = User.toUserEntity(kakaoDTO);
         memberRepository.save(user);
     }
