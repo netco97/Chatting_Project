@@ -1,7 +1,9 @@
 package com.example.chat.service;
 
-import com.example.chat.Repository.MemberRepository;
+import com.example.chat.Repository.ChatRepository;
+import com.example.chat.dto.ChatMessage;
 import com.example.chat.dto.ChatRoom;
+import com.example.chat.entity.ChatEntity;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -12,6 +14,7 @@ import java.util.*;
 @Service
 public class ChatService {
     private Map<String, ChatRoom> chatRoomMap;
+    private final ChatRepository chatRepository;
 
     @PostConstruct
     private void init(){
@@ -35,8 +38,15 @@ public class ChatService {
         return chatRoom;
     }
 
-    public void save(){
-        // message (json) to DB
+    public void save(String roomId, String sender, String message){
+        // message (json) to DB(Entity)
+        ChatMessage chatMessage = ChatMessage.
+                builder()
+                .roomId(roomId)
+                .sender(sender)
+                .message(message).build();
 
+        ChatEntity chatEntity = ChatEntity.toChatEntity(chatMessage);
+        chatRepository.save(chatEntity);
     }
 }

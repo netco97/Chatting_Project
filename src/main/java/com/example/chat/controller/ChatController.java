@@ -22,17 +22,21 @@ public class ChatController {
     public void message(ChatMessage message) {
         if (ChatMessage.MessageType.ENTER.equals(message.getType()))
             message.setMessage(message.getSender() + "님이 입장하셨습니다.");
+
         messagingTemplate.convertAndSend("/sub/chat/room/" + message.getRoomId(), message);
 
-
+        String roomId = message.getRoomId();
+        String sender = message.getSender();
+        String message_content = message.getMessage();
         System.out.println("--------------------체크용------------------");
-        System.out.println("RoomId : " + message.getRoomId());
-        System.out.println("Sendor : " + message.getSender());
-        System.out.println("Message : "+ message.getMessage());
+        System.out.println("RoomId : " + roomId);
+        System.out.println("Sender : " + sender);
+        System.out.println("Message : "+ message_content);
         System.out.println("message type : "+ message.getType());
         System.out.println("--------------------체크용------------------");
 
         //Message to DB
-        chatService.save();
+        if(ChatMessage.MessageType.TALK.equals(message.getType()))
+            chatService.save(roomId,sender,message_content);
     }
 }
