@@ -4,6 +4,7 @@ import com.example.chat.dto.KakaoDTO;
 import com.example.chat.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -23,7 +24,7 @@ public class KaKaoLoginController {
     }
 
     @GetMapping("/kakao")
-    public String kakaoLogin(@RequestParam(value = "code", required = false) String code) throws Exception {
+    public String kakaoLogin(@RequestParam(value = "code", required = false) String code, Model model) throws Exception {
         System.out.println("#########" + code);
         String access_Token = memberService.getAccessToken(code);
 
@@ -36,7 +37,11 @@ public class KaKaoLoginController {
         System.out.println("###nickname#### : " + userInfo.get("nickname"));
         System.out.println("###email#### : " + userInfo.get("email"));
         System.out.println("###id#### : " + userInfo.get("id"));
-        return "test";
+
+        String name = userInfo.get("nickname").toString();
+
+        model.addAttribute("kakao_name", name);
+        return "chat/room";
     }
 
 }
