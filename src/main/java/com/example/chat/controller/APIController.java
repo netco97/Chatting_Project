@@ -19,10 +19,11 @@ public class APIController {
     public String findAll(Model model){
         List<KakaoDTO> kakaoDTOList = memberService.findAll();
         model.addAttribute("kakaoList", kakaoDTOList);
-
         //Test 찍어봣음
         System.out.println(model);
         //아직 API 쓸데가 없음 (이거 나중에 Model and view 로 만들면 여러개 뷰에다가 모델 쏴줄수 있을것같음 생각날때 미리 적어둠)
-        return "chat/room";
+
+        return "kakao_api";
     }
+
 }

@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Hello WebSocket</title>
+</head>
+<body>
+    <button onclick="test" id="A">찬성</button>
+    <progress value="50" min="0" max="100" id="value"></progress>
+<script src="/webjars/jquery/jquery.min.js"></script>
+<script src="/webjars/sockjs-client/sockjs.min.js"></script>
+<script src="/webjars/stomp-websocket/stomp.min.js"></script>
+<script>
+    function test(){
+        sendValue();
+
+    }
+
+    function sendValue() {
+    stompClient.send("/app/hello", {}, JSON.stringify({'value': '50'}));
+    }
+    function showBar(message){
+        document.getElementById("value").value=message;
+    }
+
+
+    function connect() {
+    var socket = new SockJS('/gs-guide-websocket');
+    stompClient = Stomp.over(socket);
+    stompClient.connect({}, function (frame) {
+        console.log('Connected: ' + frame);
+        stompClient.subscribe('/topic/greetings', function (res) {
+            console.log("test"+res.body);
+            showBar(JSON.parse(res.body).content);
+            });
+        });
+    }
+
+    connect();
+
+
+</script>
+</body>
+</html>
