@@ -9,6 +9,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class HelloMessage {
+public class VoteMessage {
+    private String agree;
     private String value;
 }

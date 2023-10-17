@@ -14,13 +14,13 @@ public class VoteWebSockConfig implements WebSocketMessageBrokerConfigurer {
 
     @Override
     public void registerStompEndpoints(StompEndpointRegistry registry){
-        registry.addEndpoint("/gs-guide-websocket").setAllowedOriginPatterns("*").withSockJS();
+        registry.addEndpoint("/ws-vote").setAllowedOriginPatterns("*").withSockJS();
     }
 
     @Override
     public void configureMessageBroker(MessageBrokerRegistry registry){
-        registry.enableSimpleBroker("/topic");
+        registry.enableSimpleBroker("/sub");
 
-        registry.setApplicationDestinationPrefixes("/app");
+        registry.setApplicationDestinationPrefixes("/pub");
     }
 }

@@ -4,33 +4,26 @@
     <title>Hello WebSocket</title>
 </head>
 <body>
-    <button onclick="test" id="A">찬성</button>
-    <progress value="50" min="0" max="100" id="value"></progress>
+    <button onclick="onClick();" id="A">찬성</button>
+    <progress value="50" min="0" max="100" id="prog"></progress>
 <script src="/webjars/jquery/jquery.min.js"></script>
 <script src="/webjars/sockjs-client/sockjs.min.js"></script>
 <script src="/webjars/stomp-websocket/stomp.min.js"></script>
 <script>
-    function test(){
-        sendValue();
 
-    }
-
-    function sendValue() {
-    stompClient.send("/app/hello", {}, JSON.stringify({'value': '50'}));
-    }
-    function showBar(message){
-        document.getElementById("value").value=message;
+    function onClick(){
+        stompClient.send("/pub/message" , {}, JSON.stringify({'value': $("#prog").val()}));
     }
 
 
     function connect() {
-    var socket = new SockJS('/gs-guide-websocket');
+    var socket = new SockJS('/ws-vote');
     stompClient = Stomp.over(socket);
     stompClient.connect({}, function (frame) {
         console.log('Connected: ' + frame);
-        stompClient.subscribe('/topic/greetings', function (res) {
-            console.log("test"+res.body);
-            showBar(JSON.parse(res.body).content);
+        stompClient.subscribe('/sub/voteMessage', function (message) {
+
+            console.log((JSON.parse(message.body)).getValue);
             });
         });
     }
