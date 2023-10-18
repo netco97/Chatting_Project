@@ -18,6 +18,19 @@
 <div>
     <button onclick="location.href=`/chat/room`">돌아가기</button>
 </div>
+
+<!-- vote div -->
+<div style="text-align : center;" id = "vote">
+    <div>
+        <p>오늘 저녁 치킨</p>
+    </div>
+    <div>
+        <button onclick="pro_onClick();" id="A">찬성</button>
+        <progress value="50" min="0" max="100" id="progress"></progress>
+        <button onclick="con_onClick();">반대</button>
+    </div>
+</div>
+
 <div class="container" id="app" v-cloak>
     <div>
         <h2>{{room.name}}</h2>
@@ -41,6 +54,7 @@
 <!-- JavaScript -->
 <script src="/webjars/vue/2.6.14/dist/vue.min.js"></script>
 <script src="/webjars/axios/0.21.1/dist/axios.min.js"></script>
+<script src="/webjars/jquery/jquery.min.js"></script>
 <script src="/webjars/sockjs-client/1.5.1/sockjs.min.js"></script>
 <script src="/webjars/stomp-websocket/2.3.4/stomp.min.js"></script>
 <script>
@@ -88,7 +102,33 @@
             alert("error : "+error);
         });
     }
+
+
+    // 투표 이벤트처리 함수
+    function pro_onClick(){
+        const pro = "pro";
+        const roomId = localStorage.getItem('ws-stomp.roomId');
+        stompClient.send("/pub/message" , {}, JSON.stringify({'value': $("#progress").val(), 'roomId' : roomId ,'pro' : pro}));
+    }
+
+    // 투표 웹소켓 함수
+    function connect2() {
+    var socket = new SockJS('/ws-vote');
+    stompClient = Stomp.over(socket);
+
+    stompClient.connect({}, function (frame) {
+        console.log('Connected: ' + frame);
+        stompClient.subscribe('/sub/voteMessage', function (message) {
+
+            console.log((JSON.parse(message.body)).getValue);
+            console.log((JSON.parse(message.body)).getRoomId);
+            });
+        });
+    }
+
     connect();
+    connect2();
+
 </script>
 </body>
 </html>

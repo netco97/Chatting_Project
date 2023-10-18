@@ -14,18 +14,17 @@ import java.util.Map;
 @RequiredArgsConstructor
 @Controller
 public class VoteController {
-    @GetMapping("/vote")
-    public String vote(){
-
-        return "/vote";
-    }
 
     @MessageMapping("/message")
     @SendTo("/sub/voteMessage")
     public Map<String, Object> sendToFront(VoteMessage message){
         Map<String, Object> result = new HashMap<String,Object>();
         result.put("getValue",message.getValue());
-        System.out.println(result.get("getValue"));
+        result.put("getRoomId",message.getRoomId());
+        result.put("getPro",message.getPro());
+        System.out.println("Value : "+result.get("getValue"));
+        System.out.println("roomId : "+result.get("getRoomId"));
+        System.out.println("pro : "+result.get("getPro"));
         return result;
     }
 

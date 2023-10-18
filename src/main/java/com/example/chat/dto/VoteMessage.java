@@ -10,6 +10,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 public class VoteMessage {
-    private String agree;
+    private String roomId;
     private String value;
+    private String pro;
 }

@@ -27,10 +27,12 @@ public class ChatRoomController {
         return chatService.findAllRoom();
     }
     // 채팅방 생성
-    @PostMapping("/room")
+    @PostMapping(value = "/room")
     @ResponseBody
     public ChatRoom createRoom(@RequestParam String name) {
-        return chatService.createChatRoom(name);
+
+        // RoomId 를 API에서 따와서 그걸 /room 하고 /room/enter/{id}로 보내주면 만들떄 roomname도 같이 보낼수있을것같음
+        return chatService.createChatRoom(name); //chat/room post통신에서 name을 쓸수있읍니다.
     }
     // 채팅방 입장 화면
     @GetMapping("/room/enter/{roomId}")
