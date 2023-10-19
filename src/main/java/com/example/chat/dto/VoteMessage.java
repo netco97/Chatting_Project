@@ -13,4 +13,5 @@ public class VoteMessage {
     private String roomId;
     private String value;
     private String pro;
+    private String con;
 }
