@@ -14,6 +14,7 @@
         }
         .vote_contents {
             display : flex;
+            justify-content : center;
             }
     </style>
 </head>
@@ -23,14 +24,14 @@
 </div>
 
 <!-- vote div -->
-<div style="text-align : center;" id = "vote">
-    <div>
+<div class="vote_container">
+    <div style="text-align : center">
         <p>오늘 저녁 치킨</p>
     </div>
     <div class="vote_contents">
         <button onclick="pro_onClick();" >찬성</button>
         <p id="pro_percentage">0</p>
-        <progress value="50" min="0" max="100" id="progress"></progress>
+        <progress value="0" min="0" max="100" id="progress"></progress>
         <button onclick="con_onClick();">반대</button>
         <p id="con_percentage">0</p>
     </div>
@@ -138,6 +139,7 @@
             const con = document.getElementById("con_percentage");
             pro.innerHTML = (JSON.parse(message.body)).getProrate;
             con.innerHTML = (JSON.parse(message.body)).getConrate;
+            document.getElementById("progress").value = (JSON.parse(message.body)).getProrate;
             console.log((JSON.parse(message.body)).getValue);
             console.log((JSON.parse(message.body)).getRoomId);
             console.log((JSON.parse(message.body)).getProrate);

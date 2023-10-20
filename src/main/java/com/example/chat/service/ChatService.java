@@ -35,7 +35,7 @@ public class ChatService {
     public ChatRoom createChatRoom(String name){
         ChatRoom chatRoom = ChatRoom.create(name);
         chatRoomMap.put(chatRoom.getRoomId(), chatRoom);
-        System.out.println("chatRoom 확인 " + chatRoom.getName());
+        System.out.println("chatRoom 확인 " + chatRoom.getName()+ "chatRoomMap : " + chatRoomMap);
         return chatRoom;
     }
 
