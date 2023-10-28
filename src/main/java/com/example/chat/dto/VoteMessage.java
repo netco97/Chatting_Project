@@ -10,7 +10,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 public class VoteMessage {
-    private String pro;
-    private String con;
-    private String roomId;
+    private String roomId;  //룸번호
+    private String pro; //찬성
+    private String con; //반대
 }

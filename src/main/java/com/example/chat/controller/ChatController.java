@@ -23,6 +23,9 @@ public class ChatController {
         if (ChatMessage.MessageType.ENTER.equals(message.getType()))
             message.setMessage(message.getSender() + "님이 입장하셨습니다.");
 
+
+
+
         messagingTemplate.convertAndSend("/sub/chat/room/" + message.getRoomId(), message);
 
         String roomId = message.getRoomId();
