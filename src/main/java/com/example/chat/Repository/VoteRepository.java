@@ -12,7 +12,6 @@ import java.util.List;
 @Repository
 public interface VoteRepository extends JpaRepository<VoteEntity, String> {
 
-
     @Transactional
     @Modifying(clearAutomatically = true)
     @Query(value = "UPDATE vote_table v SET v.pro=v.pro+?1 , v.con=v.con+?2 where v.room_Id=?3", nativeQuery = true)

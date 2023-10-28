@@ -144,7 +144,7 @@
     stompClient.connect({}, function (frame) {
         console.log('Connected: ' + frame);
         stompClient.subscribe("/sub/voteMessage/"+roomId, function (message) {
-            console.log(message);
+                console.log(JSON.parse(message.body));
 
             });
         });
