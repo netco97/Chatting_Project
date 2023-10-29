@@ -21,7 +21,7 @@ public interface VoteRepository extends JpaRepository<VoteEntity, String> {
     //Native Query
     @Query(value = "select pro from vote_table where room_Id=?1" , nativeQuery = true)
     int proCount(String roomId);
-
     @Query(value = "select con from vote_table where room_Id=?1", nativeQuery = true)
     int conCount(String roomId);
+
 }

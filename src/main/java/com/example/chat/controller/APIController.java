@@ -1,20 +1,25 @@
 package com.example.chat.controller;
 
+import com.example.chat.Repository.VoteRepository;
 import com.example.chat.dto.KakaoDTO;
 import com.example.chat.service.MemberService;
+import com.example.chat.service.VoteService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.List;
+import java.util.Map;
 
 @Controller
 @RequiredArgsConstructor
 public class APIController {
-
+    private final VoteRepository voteRepository;
     private final MemberService memberService;
 
+    //kakao회원정보
     @GetMapping("/member")
     public String findAll(Model model){
         List<KakaoDTO> kakaoDTOList = memberService.findAll();

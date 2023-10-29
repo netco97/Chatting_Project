@@ -30,10 +30,10 @@
     </div>
     <div class="vote_contents">
         <button onclick="pro_onClick();" >찬성</button>
-        <p id="pro_percentage">0</p>
+        <p id="pro_percentage" th:text="${view_pro_rate}"></p>
         <progress value="50" min="0" max="100" id="progress"></progress>
         <button onclick="con_onClick();">반대</button>
-        <p id="con_percentage">0</p>
+        <p id="con_percentage" th:text="${view_con_rate}"></p>
     </div>
 </div>
 
