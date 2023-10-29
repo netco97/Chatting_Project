@@ -37,6 +37,12 @@ public class VoteController {
         //insert into or update
         voteService.update(message.getRoomId(),message.getPro(),message.getCon());
 
+        Map<String, Object> result = voteService.select_vote(message.getRoomId());
+        System.out.println(result);
+
+        message.setProrate(String.valueOf(result.get("getProrate")));
+        message.setConrate(String.valueOf(result.get("getConrate")));
+
         messagingTemplate.convertAndSend("/sub/voteMessage/" + message.getRoomId(), message);
 
     }

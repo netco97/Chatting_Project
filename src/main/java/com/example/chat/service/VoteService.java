@@ -6,7 +6,8 @@ import com.example.chat.entity.VoteEntity;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import javax.transaction.Transactional;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 
 @Service
@@ -33,4 +34,30 @@ public class VoteService {
         }
 
     }
+
+    //투표 계산 함수
+    public Map<String, Object> select_vote(String roomId){
+
+        Map<String, Object> result = new HashMap<String,Object>();
+
+        int pro_count = voteRepository.proCount(roomId);
+        int con_count = voteRepository.conCount(roomId);
+
+        double total_count = (double) (pro_count+con_count);
+
+        System.out.println("전체투표수 : "+total_count);
+
+        double pro_rate = Math.round(((pro_count / total_count)*100)*100)/100.0;
+        double con_rate = Math.round(((con_count / total_count)*100)*100)/100.0;
+
+        System.out.println("찬성 비율 : " +pro_rate);
+        System.out.println("반대 비율 : " +con_rate);
+
+        result.put("getProrate",pro_rate);
+        result.put("getConrate",con_rate);
+
+        return result;
+    }
+
+
 }

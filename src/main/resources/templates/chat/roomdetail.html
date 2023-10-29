@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en" xmlns:v-on="http://www.w3.org/1999/xhtml">
+<html lang="en" xmlns:v-on="http://www.w3.org/1999/xhtml" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
     <title>Websocket ChatRoom</title>
     <!-- Required meta tags -->
@@ -63,7 +63,7 @@
 <script src="/webjars/jquery/jquery.min.js"></script>
 <script src="/webjars/sockjs-client/1.5.1/sockjs.min.js"></script>
 <script src="/webjars/stomp-websocket/2.3.4/stomp.min.js"></script>
-<script>
+<script th:inline="javascript">
     // vote 계산 변수
     let pro_count = 0;
     let con_count = 0;
@@ -123,13 +123,13 @@
     // 투표 찬성 함수
     function pro_onClick(){
         const pro = "pro";
-        const roomId = localStorage.getItem('ws-stomp.roomId');
+        const roomId = [[${roomId}]];
         stompClient.send("/pub/message" , {}, JSON.stringify({'pro' : 1 , 'con' : 0, 'roomId' : roomId}));
     }
 
     function con_onClick(){
         const con = "con";
-        const roomId = localStorage.getItem('ws-stomp.roomId');
+        const roomId = [[${roomId}]];
         stompClient.send("/pub/message" , {}, JSON.stringify({'pro' : 0, 'con' : 1, 'roomId' : roomId}));
     }
 
@@ -139,13 +139,14 @@
     function vote_connect() {
     var socket = new SockJS('/ws-vote');
     stompClient = Stomp.over(socket);
-    const roomId = localStorage.getItem('ws-stomp.roomId');
+    const roomId = [[${roomId}]];
 
     stompClient.connect({}, function (frame) {
         console.log('Connected: ' + frame);
         stompClient.subscribe("/sub/voteMessage/"+roomId, function (message) {
                 console.log(JSON.parse(message.body));
-
+                document.getElementById("pro_percentage").innerHTML = JSON.parse(message.body).prorate;
+                document.getElementById("con_percentage").innerHTML = JSON.parse(message.body).conrate;
             });
         });
     }
