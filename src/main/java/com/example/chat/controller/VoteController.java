@@ -33,7 +33,11 @@ public class VoteController {
         System.out.println(message.getRoomId());
         System.out.println(message.getPro());
         System.out.println(message.getCon());
+        System.out.println(message.getUserId());
 
+
+        //isPro_table create
+        //voteService.isProsave(message.getRoomId(),message);
         //insert into or update
         voteService.update(message.getRoomId(),message.getPro(),message.getCon());
 

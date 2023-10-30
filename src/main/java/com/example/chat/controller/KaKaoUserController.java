@@ -1,21 +1,21 @@
 package com.example.chat.controller;
 
 import com.example.chat.Repository.VoteRepository;
+import com.example.chat.dto.ChatRoom;
 import com.example.chat.dto.KakaoDTO;
 import com.example.chat.service.MemberService;
-import com.example.chat.service.VoteService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
-import java.util.Map;
 
 @Controller
 @RequiredArgsConstructor
-public class APIController {
+@RequestMapping("/chat")
+public class KaKaoUserController {
     private final VoteRepository voteRepository;
     private final MemberService memberService;
 
@@ -30,5 +30,19 @@ public class APIController {
 
         return "kakao_api";
     }
+
+
+    //카카오 유저아이디
+    @PostMapping(value = "/kakaoname")
+    @ResponseBody
+    public String username(Model model,@RequestParam String user) {
+
+        System.out.println("KaKaoUserController " + user);
+       model.addAttribute("KaKaoUserId", user);
+
+       return "/chat/roomdetail";
+
+    }
+
 
 }
