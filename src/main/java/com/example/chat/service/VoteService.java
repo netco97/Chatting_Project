@@ -1,8 +1,11 @@
 package com.example.chat.service;
 
+import com.example.chat.Repository.IsProRepository;
 import com.example.chat.Repository.VoteRepository;
+import com.example.chat.dto.IsProDTO;
 import com.example.chat.dto.KakaoDTO;
 import com.example.chat.dto.VoteMessage;
+import com.example.chat.entity.IsProEntity;
 import com.example.chat.entity.User;
 import com.example.chat.entity.VoteEntity;
 import lombok.RequiredArgsConstructor;
@@ -14,6 +17,7 @@ import java.util.*;
 @RequiredArgsConstructor
 public class VoteService {
     private final VoteRepository voteRepository;
+    private final IsProRepository isProRepository;
 
 
 
@@ -57,6 +61,20 @@ public class VoteService {
         result.put("getConrate",con_rate);
 
         return result;
+    }
+
+
+    //찬반 테이블 save
+    public void isProsave(String roomId, String userId, int pro) {
+
+        IsProDTO isProDTO = IsProDTO.
+                    builder()
+                    .roomId(roomId)
+                    .userId(userId)
+                    .isPro(pro)
+                    .build();
+        IsProEntity isProEntity = IsProEntity.toIsProEntity(isProDTO);
+        isProRepository.save(isProEntity);
     }
 
     // vote_table DB를  미리 select해준 api만들어서 API컨트롤러에서 roomdetail에다가

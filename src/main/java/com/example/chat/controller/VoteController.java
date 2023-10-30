@@ -37,7 +37,7 @@ public class VoteController {
 
 
         //isPro_table create
-        //voteService.isProsave(message.getRoomId(),message);
+        voteService.isProsave(message.getRoomId(),message.getUserId(),Integer.parseInt(message.getPro()));
         //insert into or update
         voteService.update(message.getRoomId(),message.getPro(),message.getCon());
 

@@ -12,7 +12,7 @@ public class VoteMessage {
     private String con; //반대
     private String prorate; //찬성비율
     private String conrate; //반대비율
-    private String userId;
+    private String userId; // 유저아이디
 
     @Builder
     public VoteMessage(String roomId, String pro, String con){

@@ -27,7 +27,6 @@
 <div class="vote_container">
     <div style="text-align : center">
         <p>오늘 저녁 치킨</p>
-        <p th:text="${KaKaoUserId}"></p>
     </div>
     <div class="vote_contents">
         <button onclick="pro_onClick();" >찬성</button>
@@ -125,14 +124,14 @@
     function pro_onClick(){
         const pro = "pro";
         const roomId = [[${roomId}]];
-        const userId = [[${KaKaoUserId}]];
+        const userId = localStorage.getItem('ws-stomp.sender');
         stompClient.send("/pub/message" , {}, JSON.stringify({'pro' : 1 , 'con' : 0, 'roomId' : roomId, 'userId' : userId}));
     }
 
     function con_onClick(){
         const con = "con";
         const roomId = [[${roomId}]];
-        const userId = [[${KaKaoUserId}]];
+        const userId = localStorage.getItem('ws-stomp.sender');
         stompClient.send("/pub/message" , {}, JSON.stringify({'pro' : 0, 'con' : 1, 'roomId' : roomId, 'userId' : userId}));
     }
 

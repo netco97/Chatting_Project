@@ -97,7 +97,6 @@
                 }
 
                 if(sender !== "") {
-                    name_post(sender);
                     localStorage.setItem('ws-stomp.sender',sender);
                     localStorage.setItem('ws-stomp.roomId',roomId);
                     location.href="/chat/room/enter/"+roomId;
@@ -105,23 +104,6 @@
             }
         }
     });
-
-    function name_post(sender){
-	var params = {
-		 "user" : sender
-	}
-	$.ajax({
-        url: "/chat/kakaoname",
-        type: "POST",
-        data: params,
-        success: function(data){
-            alert("통신 성공")
-        },
-        error: function(){
-            alert("데이터 통신중 에러발생");
-        }
-    });
-}
 </script>
 </body>
 </html>
