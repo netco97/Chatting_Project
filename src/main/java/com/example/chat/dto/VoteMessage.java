@@ -15,10 +15,5 @@ public class VoteMessage {
     private String userId; // 유저아이디
     private String topic; // 방이름
 
-    @Builder
-    public VoteMessage(String roomId, String pro, String con){
-        this.roomId = roomId;
-        this.pro = pro;
-        this.con = con;
-    }
+
 }

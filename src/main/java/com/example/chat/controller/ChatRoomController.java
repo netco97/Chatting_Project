@@ -1,8 +1,8 @@
 package com.example.chat.controller;
 
-import com.example.chat.Repository.VoteRepository;
+import com.example.chat.Repository.InformationRepository;
 import com.example.chat.dto.ChatRoom;
-import com.example.chat.entity.VoteEntity;
+import com.example.chat.entity.InformationEntity;
 import com.example.chat.service.ChatService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -10,7 +10,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 
 @Controller
@@ -18,7 +17,7 @@ import java.util.Optional;
 @RequestMapping("/chat")
 public class ChatRoomController {
     private final ChatService chatService;
-    private final VoteRepository voteRepository;
+    private final InformationRepository informationRepository;
 
 
     // 채팅 리스트 화면
@@ -40,18 +39,18 @@ public class ChatRoomController {
         return chatService.createChatRoom(name); //chat/room post통신에서 name을 쓸수있읍니다.
     }
 
-    // 채팅방 입장 화면
+    // 채팅방 입장 화면 (찬,반 투표율, 룸Id보냄) 미리 DB에 있던 찬/반 투표율 계산해서 화면에 띄어주는역할
     @GetMapping("/room/enter/{roomId}")
     public String roomDetail(Model model, @PathVariable String roomId) {
         String pro_rate = "0";
         String con_rate = "0";
-        Optional<VoteEntity> result = voteRepository.findById(roomId);
+        Optional<InformationEntity> result = informationRepository.findById(roomId);
 
         //Vote DB가 존재하면
         if(result.isPresent())
         {
-            double pro_count = (double) voteRepository.proCount(roomId);
-            double con_count = (double) voteRepository.conCount(roomId);
+            double pro_count = (double) informationRepository.proCount(roomId);
+            double con_count = (double) informationRepository.conCount(roomId);
 
             double total_count = (double) (pro_count+con_count);
 

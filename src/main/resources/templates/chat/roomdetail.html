@@ -26,7 +26,7 @@
 <!-- vote div -->
 <div class="vote_container">
     <div style="text-align : center">
-        <p>오늘 저녁 치킨</p>
+        <p id="topic"></p>
     </div>
     <div class="vote_contents">
         <button onclick="pro_onClick();" >찬성</button>
@@ -67,7 +67,6 @@
 
     const roomId = [[${roomId}]];
     const userId = [[${session.userId}]];
-
     let room = {};
 
     $(document).ready(function(){
@@ -77,6 +76,7 @@
         data : {},
         success : function (res){
             room = res;
+            document.getElementById("topic").innerHTML = room.name;
             console.log("topic 테스트 " + room.name);
         },
         });

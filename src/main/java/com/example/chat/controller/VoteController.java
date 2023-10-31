@@ -1,6 +1,7 @@
 package com.example.chat.controller;
 
 import com.example.chat.dto.VoteMessage;
+import com.example.chat.service.InformationService;
 import com.example.chat.service.VoteService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
@@ -23,6 +24,7 @@ public class VoteController {
     private double con_rate = 0;
     private final SimpMessageSendingOperations messagingTemplate;
     private final VoteService voteService;
+    private final InformationService informationService;
 
 
 
@@ -40,9 +42,9 @@ public class VoteController {
         //isPro_table create
         voteService.isProsave(message.getRoomId(),message.getUserId(),Integer.parseInt(message.getPro()));
         //insert into or update
-        voteService.update(message.getRoomId(),message.getPro(),message.getCon());
+        informationService.update(message.getRoomId(),message.getPro(),message.getCon(),message.getTopic());
 
-        Map<String, Object> result = voteService.select_vote(message.getRoomId());
+        Map<String, Object> result = informationService.select_vote(message.getRoomId());
         System.out.println(result);
 
         message.setProrate(String.valueOf(result.get("getProrate")));

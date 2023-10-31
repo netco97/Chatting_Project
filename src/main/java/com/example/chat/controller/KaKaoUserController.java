@@ -1,24 +1,20 @@
 package com.example.chat.controller;
 
-import com.example.chat.Repository.VoteRepository;
-import com.example.chat.dto.ChatRoom;
+import com.example.chat.Repository.InformationRepository;
 import com.example.chat.dto.KakaoDTO;
 import com.example.chat.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.ModelAndView;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @Controller
 @RequiredArgsConstructor
 @RequestMapping("/chat")
 public class KaKaoUserController {
-    private final VoteRepository voteRepository;
+    private final InformationRepository informationRepository;
     private final MemberService memberService;
 
     //kakao회원정보
@@ -33,16 +29,5 @@ public class KaKaoUserController {
         return "kakao_api";
     }
 
-
-    //카카오 유저아이디
-    /*@GetMapping("/kakaoname")
-    public String username(Model model, @RequestParam String user) {
-
-        System.out.println("KaKaoUserController " + user);
-       model.addAttribute("KaKaoUserId", user);
-
-       return "/chat/roomdetail";
-
-    }*/
 
 }
