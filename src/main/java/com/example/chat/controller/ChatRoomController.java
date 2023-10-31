@@ -21,11 +21,9 @@ public class ChatRoomController {
     private final VoteRepository voteRepository;
 
 
-
-
     // 채팅 리스트 화면
     @GetMapping("/room")
-    public String rooms(Model model) {
+    public String rooms() {
         return "/chat/room";
     }
     // 모든 채팅방 목록 반환

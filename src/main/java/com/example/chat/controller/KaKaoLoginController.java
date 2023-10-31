@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import javax.servlet.http.HttpSession;
 import java.util.HashMap;
 
 @Controller
@@ -24,12 +25,13 @@ public class KaKaoLoginController {
     }
 
     @GetMapping("/kakao")
-    public String kakaoLogin(@RequestParam(value = "code", required = false) String code, Model model) throws Exception {
+    public String kakaoLogin(@RequestParam(value = "code", required = false) String code, HttpSession session) throws Exception {
         System.out.println("#########" + code);
         String access_Token = memberService.getAccessToken(code);
 
         HashMap<String, Object> userInfo = memberService.getUserInfo(access_Token);
 
+        //로그인 세션 쿠키 만들어짐 -> 30분유지되도록 -> 세션을 이용해서 -> 로그인한 사람의 정보를 가져올 수 있음.
 
         //DB 저장
         memberService.save();
@@ -39,9 +41,13 @@ public class KaKaoLoginController {
         System.out.println("###email#### : " + userInfo.get("email"));
         System.out.println("###id#### : " + userInfo.get("id"));
 
-        String name = userInfo.get("nickname").toString();
+        //세션 로직
+        if (userInfo.get("email")!=null){
+            session.setMaxInactiveInterval(1800); // 1800 = 60 * 30 => 30분
+            session.setAttribute("userId",userInfo.get("nickname"));
+            session.setAttribute("accessToken", access_Token);
+        }
 
-        model.addAttribute("kakao_name", name);
         return "chat/room";
     }
 

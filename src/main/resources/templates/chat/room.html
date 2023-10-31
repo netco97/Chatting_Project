@@ -57,7 +57,8 @@
         data: {
             room_name : '',
             chatrooms: [
-            ]
+            ],
+            sender : ''
         },
         created() {
             this.findAllRoom();
@@ -67,8 +68,11 @@
                 axios.get('/chat/rooms').then(response => { this.chatrooms = response.data; });
             },
             createRoom: function() {
-                var sender = "[[${kakao_name}]]";
-                if(sender === ""){
+                if("[[${session.accessToken}]]" !="")
+                {
+                    this.sender = "[[${session.userId}]]"
+                }
+                if(this.sender === ""){
                     alert("로그인을 해주세요");
                     return;
                 }
@@ -91,13 +95,16 @@
             },
             enterRoom: function(roomId) {
                 //var sender = prompt('대화명을 입력해 주세요.');
-                var sender = "[[${kakao_name}]]";
-                if(sender === ""){
+                if("[[${session.accessToken}]]" !="")
+                {
+                    this.sender = "[[${session.userId}]]"
+                }
+                if(this.sender === ""){
                     alert("로그인을 해주세요");
                 }
 
-                if(sender !== "") {
-                    localStorage.setItem('ws-stomp.sender',sender);
+                if(this.sender !== "") {
+                    localStorage.setItem('ws-stomp.sender',this.sender);
                     localStorage.setItem('ws-stomp.roomId',roomId);
                     location.href="/chat/room/enter/"+roomId;
                 }

@@ -82,13 +82,12 @@
         data: {
             roomId: '',
             room: {},
-            sender: '',
+            sender: [[${session.userId}]],
             message: '',
             messages: []
         },
         created() {
             this.roomId = localStorage.getItem('ws-stomp.roomId');
-            this.sender = localStorage.getItem('ws-stomp.sender');
             this.findRoom();
         },
         methods: {
@@ -124,14 +123,14 @@
     function pro_onClick(){
         const pro = "pro";
         const roomId = [[${roomId}]];
-        const userId = localStorage.getItem('ws-stomp.sender');
+        const userId = [[${session.userId}]];
         stompClient.send("/pub/message" , {}, JSON.stringify({'pro' : 1 , 'con' : 0, 'roomId' : roomId, 'userId' : userId}));
     }
 
     function con_onClick(){
         const con = "con";
         const roomId = [[${roomId}]];
-        const userId = localStorage.getItem('ws-stomp.sender');
+        const userId = [[${session.userId}]];
         stompClient.send("/pub/message" , {}, JSON.stringify({'pro' : 0, 'con' : 1, 'roomId' : roomId, 'userId' : userId}));
     }
 
