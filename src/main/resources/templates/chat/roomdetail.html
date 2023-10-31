@@ -64,14 +64,24 @@
 <script src="/webjars/sockjs-client/1.5.1/sockjs.min.js"></script>
 <script src="/webjars/stomp-websocket/2.3.4/stomp.min.js"></script>
 <script th:inline="javascript">
-    // vote 계산 변수
-    let pro_count = 0;
-    let con_count = 0;
-    let total_count = 0;
-    let pro_rate = 0;
-    let con_rate = 0;
-    let pro;
-    let con;
+
+    const roomId = [[${roomId}]];
+    const userId = [[${session.userId}]];
+
+    let room = {};
+
+    $(document).ready(function(){
+    $.ajax({
+        type : "GET",
+        url : "/chat/room/"+roomId,
+        data : {},
+        success : function (res){
+            room = res;
+            console.log("topic 테스트 " + room.name);
+        },
+        });
+       });
+
 
     // websocket & stomp initialize
     var sock = new SockJS("/ws-stomp");
@@ -87,7 +97,7 @@
             messages: []
         },
         created() {
-            this.roomId = localStorage.getItem('ws-stomp.roomId');
+            this.roomId = [[${roomId}]];
             this.findRoom();
         },
         methods: {
@@ -118,20 +128,15 @@
         });
     }
 
-
     // 투표 찬성 함수
     function pro_onClick(){
-        const pro = "pro";
-        const roomId = [[${roomId}]];
-        const userId = [[${session.userId}]];
-        stompClient.send("/pub/message" , {}, JSON.stringify({'pro' : 1 , 'con' : 0, 'roomId' : roomId, 'userId' : userId}));
+        stompClient.send("/pub/message" , {}, JSON.stringify(
+        {'pro' : 1 , 'con' : 0, 'roomId' : roomId, 'userId' : userId, 'topic' : room.name}));
     }
 
     function con_onClick(){
-        const con = "con";
-        const roomId = [[${roomId}]];
-        const userId = [[${session.userId}]];
-        stompClient.send("/pub/message" , {}, JSON.stringify({'pro' : 0, 'con' : 1, 'roomId' : roomId, 'userId' : userId}));
+        stompClient.send("/pub/message" , {}, JSON.stringify(
+        {'pro' : 0, 'con' : 1, 'roomId' : roomId, 'userId' : userId, 'topic' : room.name}));
     }
 
     // 투표 반대 함수
@@ -140,7 +145,6 @@
     function vote_connect() {
     var socket = new SockJS('/ws-vote');
     stompClient = Stomp.over(socket);
-    const roomId = [[${roomId}]];
 
     stompClient.connect({}, function (frame) {
         console.log('Connected: ' + frame);

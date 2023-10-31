@@ -34,6 +34,7 @@ public class VoteController {
         System.out.println(message.getPro());
         System.out.println(message.getCon());
         System.out.println(message.getUserId());
+        System.out.println(message.getTopic());
 
 
         //isPro_table create
