@@ -2,12 +2,16 @@ package com.example.chat.controller;
 
 import com.example.chat.Repository.InformationRepository;
 import com.example.chat.dto.ChatRoom;
+import com.example.chat.entity.FileEntity;
 import com.example.chat.entity.InformationEntity;
 import com.example.chat.service.ChatService;
+import com.example.chat.service.FileService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.Optional;
@@ -17,6 +21,7 @@ import java.util.Optional;
 @RequestMapping("/chat")
 public class ChatRoomController {
     private final ChatService chatService;
+    private final FileService fileService;
     private final InformationRepository informationRepository;
 
 
@@ -31,13 +36,29 @@ public class ChatRoomController {
     public List<ChatRoom> room() {
         return chatService.findAllRoom();
     }
-    // 채팅방 생성
+
+
     @PostMapping(value = "/room")
     @ResponseBody
-    public ChatRoom createRoom(@RequestParam String name) {
-        // RoomId 를 API에서 따와서 그걸 /room 하고 /room/enter/{id}로 보내주면 만들떄 roomname도 같이 보낼수있을것같음
-        return chatService.createChatRoom(name); //chat/room post통신에서 name을 쓸수있읍니다.
+    public ChatRoom createRoom(@RequestParam("uploadFile") List<MultipartFile> files, @RequestParam("room_name") String name) throws Exception{
+        String fileRealName = String.valueOf(files.get(0).getOriginalFilename());
+        System.out.println("파일이름 확인 " + fileRealName);
+
+        fileService.addBoard(FileEntity.builder().build(),files);
+
+        return chatService.createChatRoom(name);
     }
+    // 채팅방 생성 (roomid, file값)
+    /*@PostMapping(value = "/room")
+    @ResponseBody
+    public ChatRoom createRoom(@RequestParam("uploadFile") MultipartFile file, @RequestParam("room_name") String name){
+        String fileRealName = file.getOriginalFilename();
+        System.out.println(fileRealName);
+
+
+        return chatService.createChatRoom(name);
+    }*/
+
 
     // 채팅방 입장 화면 (찬,반 투표율, 룸Id보냄) 미리 DB에 있던 찬/반 투표율 계산해서 화면에 띄어주는역할
     @GetMapping("/room/enter/{roomId}")
