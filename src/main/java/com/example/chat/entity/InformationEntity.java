@@ -14,7 +14,7 @@ import javax.persistence.Table;
 @Getter
 @Setter
 @Table(name = "information_table")
-public class InformationEntity {
+public class InformationEntity extends BaseTimeEntity{
 
     @Id
     private String roomId;
