@@ -8,23 +8,25 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpSession;
 import java.util.HashMap;
 
+import static org.springframework.web.bind.annotation.RequestMethod.GET;
+
 @Controller
 @RequiredArgsConstructor
-@RequestMapping(value = "/login")
 public class KaKaoLoginController {
 
     private final MemberService memberService;
 
-    @GetMapping("")
+    @GetMapping("/login")
     public String login() {
         return "/login";
     }
 
-    @GetMapping("/kakao")
+    @GetMapping("/login/kakao")
     public String kakaoLogin(@RequestParam(value = "code", required = false) String code, HttpSession session) throws Exception {
         System.out.println("#########" + code);
         String access_Token = memberService.getAccessToken(code);
@@ -48,7 +50,18 @@ public class KaKaoLoginController {
             session.setAttribute("accessToken", access_Token);
         }
 
-        return "chat/room";
+        return "redirect:/chat/room";
+    }
+
+    @GetMapping("/logout")
+    public String logout(HttpSession session) {
+        System.out.println(session.getAttribute("accessToken"));
+
+        memberService.logout((String)session.getAttribute("accessToken"));
+        session.removeAttribute("accessToken");
+        session.removeAttribute("userId");
+
+        return "redirect:/chat/room";
     }
 
 }
