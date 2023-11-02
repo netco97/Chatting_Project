@@ -44,9 +44,14 @@ public class ChatRoomController {
         String fileRealName = String.valueOf(files.get(0).getOriginalFilename());
         System.out.println("파일이름 확인 " + fileRealName);
 
-        fileService.addBoard(FileEntity.builder().build(),files);
+        ChatRoom chatRoom = new ChatRoom();
+        chatRoom = chatService.createChatRoom(name);
+        String roomId = chatRoom.getRoomId();
 
-        return chatService.createChatRoom(name);
+        // roomId chatSerivce에서 뺴와서 파일서비스에 roomId를 넣어서 boradIdx를 바꾸기
+        fileService.addBoard(FileEntity.builder().build(),files,roomId);
+
+        return chatRoom;
     }
     // 채팅방 생성 (roomid, file값)
     /*@PostMapping(value = "/room")

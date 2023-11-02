@@ -15,7 +15,7 @@ import java.util.List;
 public class FileHandler {
 
     public List<FileEntity> parseFileInfo(
-            Long boardID,
+            String roomID,
             List<MultipartFile> multipartFiles
     ) throws Exception {
 
@@ -75,7 +75,7 @@ public class FileHandler {
                 String new_file_name = System.nanoTime() + originalFileExtension;
                 // 생성 후 리스트에 추가
                 FileEntity fileEntity = FileEntity.builder()
-                        .boardIdx(boardID)
+                        .roomId(roomID)
                         .originalFileName(multipartFile.getOriginalFilename())
                         .storedFileName(path + "/" + new_file_name)
                         .fileSize(multipartFile.getSize())

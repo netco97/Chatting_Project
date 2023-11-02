@@ -22,7 +22,7 @@ public class FileEntity extends BaseTimeEntity{
     private long id;
 
     @Column
-    private long boardIdx;
+    private String roomId;
 
     @Column
     private String originalFileName;

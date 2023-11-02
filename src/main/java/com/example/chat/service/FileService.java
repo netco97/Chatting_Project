@@ -23,12 +23,12 @@ public class FileService {
         this.fileHandler = new FileHandler();
     }
 
-    public FileEntity addBoard(
+    public void addBoard(
             FileEntity fileEntity,
-            List<MultipartFile> files
+            List<MultipartFile> files, String roomId
     ) throws Exception {
-        // 파일을 저장하고 그 Board 에 대한 list 를 가지고 있는다
-        List<FileEntity> list = fileHandler.parseFileInfo(fileEntity.getId(), files);
+        // 파일을 저장하고 그 FileEntity 에 대한 list 를 가지고 있는다
+        List<FileEntity> list = fileHandler.parseFileInfo(roomId, files);
 
         if (list.isEmpty()){
             // TODO : 파일이 없을 땐 어떻게 해야할까.. 고민을 해보아야 할 것
@@ -41,7 +41,7 @@ public class FileService {
             }
         }
 
-        return fileRepository.save(fileEntity);
+
     }
 
     public List<FileEntity> findBoards() {
