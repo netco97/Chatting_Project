@@ -44,11 +44,11 @@ public class FileService {
 
     }
 
-    public List<FileEntity> findBoards() {
+    public List<FileEntity> findFiles() {
         return fileRepository.findAll();
     }
 
-    public Optional<FileEntity> findBoard(Long id) {
+    public Optional<FileEntity> findFile(Long id) {
         return fileRepository.findById(id);
     }
 

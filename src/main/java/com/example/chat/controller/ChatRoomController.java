@@ -37,6 +37,14 @@ public class ChatRoomController {
         return chatService.findAllRoom();
     }
 
+    @GetMapping("/file")
+    @ResponseBody
+    public String getFile(@RequestParam Long id){
+        FileEntity fileEntity = fileService.findFile(id).orElseThrow(RuntimeException::new);
+        String imgPath = fileEntity.getStoredFileName();
+        System.out.println(imgPath);
+        return "<img src=" + imgPath + ">";
+    }
 
     @PostMapping(value = "/room")
     @ResponseBody
