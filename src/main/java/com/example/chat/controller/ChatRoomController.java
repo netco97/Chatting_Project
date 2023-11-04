@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @Controller
@@ -34,13 +35,25 @@ public class ChatRoomController {
     @GetMapping("/rooms")
     @ResponseBody
     public List<ChatRoom> room() {
-        return chatService.findAllRoom();
+        List <ChatRoom> list_imgs = chatService.findAllRoom();
+        System.out.println("size check" + list_imgs.size());
+
+        for(int i=0;i<list_imgs.size();i++)
+        {
+            String roomId = list_imgs.get(i).getRoomId();
+            System.out.println("룸아이디 "+roomId);
+            FileEntity fileEntity = fileService.findFile(roomId).orElseThrow(RuntimeException::new);
+            String imgPath = fileEntity.getStoredFileName();
+            list_imgs.get(i).setImg_path(imgPath);
+        }
+
+        return list_imgs;
     }
 
     @GetMapping("/file")
     @ResponseBody
-    public String getFile(@RequestParam Long id){
-        FileEntity fileEntity = fileService.findFile(id).orElseThrow(RuntimeException::new);
+    public String getFile(@RequestParam String roomId){
+        FileEntity fileEntity = fileService.findFile(roomId).orElseThrow(RuntimeException::new);
         String imgPath = fileEntity.getStoredFileName();
         System.out.println(imgPath);
         return "<img src=" + imgPath + ">";

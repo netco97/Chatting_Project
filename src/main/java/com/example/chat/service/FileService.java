@@ -48,8 +48,8 @@ public class FileService {
         return fileRepository.findAll();
     }
 
-    public Optional<FileEntity> findFile(Long id) {
-        return fileRepository.findById(id);
+    public Optional<FileEntity> findFile(String roomId) {
+        return fileRepository.findById(roomId);
     }
 
 }

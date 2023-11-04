@@ -18,10 +18,6 @@ import javax.persistence.*;
 public class FileEntity extends BaseTimeEntity{
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
-
-    @Column
     private String roomId;
 
     @Column
