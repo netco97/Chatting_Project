@@ -1,9 +1,12 @@
 package com.example.chat.controller;
 
+import com.example.chat.Repository.IsProRepository;
 import com.example.chat.dto.VoteMessage;
 import com.example.chat.service.InformationService;
 import com.example.chat.service.VoteService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.SendTo;
@@ -25,6 +28,7 @@ public class VoteController {
     private final SimpMessageSendingOperations messagingTemplate;
     private final VoteService voteService;
     private final InformationService informationService;
+    private final IsProRepository isProRepository;
 
 
 
@@ -38,20 +42,31 @@ public class VoteController {
         System.out.println(message.getUserId());
         System.out.println(message.getTopic());
 
+        // UserId, RoomId로 중복체크
+        if(isProRepository.duplicate_check(message.getUserId(),message.getRoomId())>=1){
+            message.setProrate(message.getProrate());
+            message.setConrate(message.getConrate());
+            message.setError("이미 투표 하셨습니다.");
+            Map<String, Object> result = informationService.select_vote(message.getRoomId());
+            message.setProrate(String.valueOf(result.get("getProrate")));
+            message.setConrate(String.valueOf(result.get("getConrate")));
 
-        //isPro_table create
-        voteService.isProsave(message.getRoomId(),message.getUserId(),Integer.parseInt(message.getPro()));
-        //insert into or update
-        informationService.update(message.getRoomId(),message.getPro(),message.getCon(),message.getTopic());
+        }
 
-        Map<String, Object> result = informationService.select_vote(message.getRoomId());
-        System.out.println(result);
+        else{
+            //isPro_table create
+            voteService.isProsave(message.getRoomId(),message.getUserId(),Integer.parseInt(message.getPro()));
+            //insert into or update
+            informationService.update(message.getRoomId(),message.getPro(),message.getCon(),message.getTopic());
 
-        message.setProrate(String.valueOf(result.get("getProrate")));
-        message.setConrate(String.valueOf(result.get("getConrate")));
+            Map<String, Object> result = informationService.select_vote(message.getRoomId());
+            System.out.println(result);
+
+            message.setProrate(String.valueOf(result.get("getProrate")));
+            message.setConrate(String.valueOf(result.get("getConrate")));
+        }
 
         messagingTemplate.convertAndSend("/sub/voteMessage/" + message.getRoomId(), message);
-
     }
 
     //pub/message에서 메세지 매핑

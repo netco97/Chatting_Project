@@ -15,5 +15,7 @@ public class VoteMessage {
     private String userId; // 유저아이디
     private String topic; // 방이름
 
+    private String error; //중복처리 에러메세지
+
 
 }

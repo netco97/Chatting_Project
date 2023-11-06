@@ -149,9 +149,18 @@
     stompClient.connect({}, function (frame) {
         console.log('Connected: ' + frame);
         stompClient.subscribe("/sub/voteMessage/"+roomId, function (message) {
-                console.log(JSON.parse(message.body));
-                document.getElementById("pro_percentage").innerHTML = JSON.parse(message.body).prorate;
-                document.getElementById("con_percentage").innerHTML = JSON.parse(message.body).conrate;
+        let response = JSON.parse(message.body);
+
+        // 중복처리
+        if (response.error !== null) {
+            alert(response.error);
+            document.getElementById("pro_percentage").innerHTML = response.prorate;
+            document.getElementById("con_percentage").innerHTML = response.conrate;
+        } else {
+            // 정상 처리
+            document.getElementById("pro_percentage").innerHTML = response.prorate;
+            document.getElementById("con_percentage").innerHTML = response.conrate;
+        }
             });
         });
     }

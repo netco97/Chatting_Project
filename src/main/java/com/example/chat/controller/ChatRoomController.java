@@ -31,7 +31,9 @@ public class ChatRoomController {
     public String rooms() {
         return "/chat/room";
     }
-    // 모든 채팅방 목록 반환
+
+
+    // 모든 채팅방 목록 반환 (room 이름반환 ,img처리,다하는부분)
     @GetMapping("/rooms")
     @ResponseBody
     public List<ChatRoom> room() {
@@ -50,6 +52,7 @@ public class ChatRoomController {
         return list_imgs;
     }
 
+    /* test success
     @GetMapping("/file")
     @ResponseBody
     public String getFile(@RequestParam String roomId){
@@ -57,7 +60,7 @@ public class ChatRoomController {
         String imgPath = fileEntity.getStoredFileName();
         System.out.println(imgPath);
         return "<img src=" + imgPath + ">";
-    }
+    }*/
 
     @PostMapping(value = "/room")
     @ResponseBody
