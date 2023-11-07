@@ -1,6 +1,8 @@
 package com.example.chat.controller;
 
+import com.example.chat.Repository.ChatRepository;
 import com.example.chat.Repository.InformationRepository;
+import com.example.chat.dto.ChatDTO;
 import com.example.chat.dto.ChatRoom;
 import com.example.chat.entity.FileEntity;
 import com.example.chat.entity.InformationEntity;
@@ -24,6 +26,7 @@ public class ChatRoomController {
     private final ChatService chatService;
     private final FileService fileService;
     private final InformationRepository informationRepository;
+    private final ChatRepository chatRepository;
 
 
     // 채팅 리스트 화면
@@ -74,6 +77,11 @@ public class ChatRoomController {
 
         // roomId chatSerivce에서 뺴와서 파일서비스에 roomId를 넣어서 boradIdx를 바꾸기
         fileService.addBoard(FileEntity.builder().build(),files,roomId);
+
+        /*List<ChatDTO> chatDTOS = chatRepository.select_chat(roomId);
+        for (ChatDTO chatDTO : chatDTOS){
+            System.out.println("chatDTO " + chatDTO);
+        }*/
 
         return chatRoom;
     }

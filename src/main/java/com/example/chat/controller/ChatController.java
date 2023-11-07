@@ -47,12 +47,16 @@ public class ChatController {
             chatService.save(roomId,sender,message_content);
     }
 
-    /*@GetMapping("/test/{roomId}")
+    @GetMapping("/test/{roomId}")
     @ResponseBody
     public List<ChatDTO> listChat(@PathVariable String roomId){
         System.out.println("roomId : "+ roomId);
         List<ChatDTO> list = chatService.listChat(roomId);
+        for (ChatDTO chatDTO : list) {
+            System.out.println(chatDTO);
+        }
+        System.out.println();
         return list;
-    }*/
+    }
 
 }

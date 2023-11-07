@@ -3,9 +3,11 @@ package com.example.chat.dto;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 @Getter
 @Setter
+@ToString
 public class ChatDTO {
     private String roomId; // 방번호
     private String sender; // 메세지 보낸사람

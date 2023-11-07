@@ -52,4 +52,8 @@ public class ChatService {
         chatRepository.save(chatEntity);
     }
 
+
+    public List<ChatDTO> listChat(String roomId) {
+        return chatRepository.findByRoomIdOrderByIdDesc(roomId);
+    }
 }
