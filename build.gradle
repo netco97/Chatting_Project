@@ -54,6 +54,9 @@ dependencies {
 	//file
 	implementation 'commons-io:commons-io:2.11.0'    /* Apache commons-io */
 	implementation group: 'commons-fileupload', name: 'commons-fileupload', version: '1.4' /* Apache Commons FileUpload */
+
+	//csrf 3.0부터는 스프링부트 3.0 써야함
+	implementation 'org.springframework.boot:spring-boot-starter-security:2.7.0'
 }
 
 tasks.named('test') {

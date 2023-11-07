@@ -50,7 +50,6 @@ public class VoteController {
             Map<String, Object> result = informationService.select_vote(message.getRoomId());
             message.setProrate(String.valueOf(result.get("getProrate")));
             message.setConrate(String.valueOf(result.get("getConrate")));
-
         }
 
         else{

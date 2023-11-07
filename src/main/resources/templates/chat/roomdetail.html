@@ -16,6 +16,10 @@
             display : flex;
             justify-content : center;
             }
+        .chat_content{
+            overflow-y: scroll;
+            height : 400px;
+        }
     </style>
 </head>
 <body>
@@ -50,12 +54,13 @@
             <button class="btn btn-primary" type="button" @click="sendMessage">보내기</button>
         </div>
     </div>
-    <ul class="list-group">
-        <li class="list-group-item" v-for="message in messages">
-            {{message.sender}} - {{message.message}}
-        </li>
-    </ul>
-    <div></div>
+    <div class="chat_content">
+        <ul class="list-group">
+            <li class="list-group-item" v-for="message in messages">
+                {{message.sender}} - {{message.message}}
+            </li>
+        </ul>
+    </div>
 </div>
 <!-- JavaScript -->
 <script src="/webjars/vue/2.6.14/dist/vue.min.js"></script>
@@ -165,11 +170,11 @@
         });
     }
 
+    // 채팅 스크롤 처리
 
 
     connect();
     vote_connect();
-
 </script>
 </body>
 </html>
