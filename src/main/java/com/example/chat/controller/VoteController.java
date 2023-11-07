@@ -42,7 +42,7 @@ public class VoteController {
         System.out.println(message.getUserId());
         System.out.println(message.getTopic());
 
-        // UserId, RoomId로 중복체크
+        // UserId, RoomId로 중복체크 --> 동명이인 추가해야함(kakao_email로 하면될듯)
         if(isProRepository.duplicate_check(message.getUserId(),message.getRoomId())>=1){
             message.setProrate(message.getProrate());
             message.setConrate(message.getConrate());

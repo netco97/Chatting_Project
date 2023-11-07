@@ -1,6 +1,7 @@
 package com.example.chat.service;
 
 import com.example.chat.Repository.ChatRepository;
+import com.example.chat.dto.ChatDTO;
 import com.example.chat.dto.ChatMessage;
 import com.example.chat.dto.ChatRoom;
 import com.example.chat.entity.ChatEntity;
@@ -50,4 +51,5 @@ public class ChatService {
         ChatEntity chatEntity = ChatEntity.toChatEntity(chatMessage);
         chatRepository.save(chatEntity);
     }
+
 }
