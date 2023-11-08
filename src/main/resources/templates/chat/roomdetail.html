@@ -18,7 +18,7 @@
             }
         .chat_content{
             overflow-y: scroll;
-            height : 400px;
+            height : 410px;
         }
     </style>
 </head>
@@ -132,7 +132,7 @@
                 this.message = '';
             },
             recvMessage: function(recv) {
-                this.messages.unshift({"type":recv.type,"sender":recv.type=='ENTER'?'[알림]':recv.sender,"message":recv.message})
+                this.messages.push({"type":recv.type,"sender":recv.type=='ENTER'?'[알림]':recv.sender,"message":recv.message})
             }
         }
     });
