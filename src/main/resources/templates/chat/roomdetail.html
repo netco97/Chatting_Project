@@ -90,11 +90,17 @@
     $(document).ready(function(){
     $.ajax({
         type : "GET",
-        url : "/test/"+roomId,
+        url : "/chat/messageList/"+roomId,
         data : {},
         success : function (res){
             console.log("통신 성공");
-            console.log(res);
+            let ul_list = $(".list-group");
+
+            for (var i = 0; i < res.length; i++) {
+            console.log(res[i].message);
+            console.log(res[i].sender);
+            ul_list.append("<li class=\"list-group-item\">"+res[i].sender+" - "+res[i].message+"</li>");
+			}
         },
         });
        });
