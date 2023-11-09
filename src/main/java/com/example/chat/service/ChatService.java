@@ -54,6 +54,9 @@ public class ChatService {
 
 
     public List<ChatDTO> listChat(String roomId) {
-        return chatRepository.findByRoomIdOrderByIdDesc(roomId);
+        //List<ChatDTO> list = chatRepository.findByRoomIdOrderByIdDesc(roomId);
+
+
+        return chatRepository.findTop10ByRoomIdOrderByIdDesc(roomId);
     }
 }

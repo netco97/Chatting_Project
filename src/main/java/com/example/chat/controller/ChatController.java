@@ -13,7 +13,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RequiredArgsConstructor
 @Controller
@@ -58,6 +61,9 @@ public class ChatController {
             System.out.println(chatDTO);
         }
         System.out.println();
+
+        //orderby id desc 으로 불러온 내용을 front에서 제일최근(id가 가장높은 순으로 메세지를 출력하면 반대가 되므로 한번 reverse해주었음
+        Collections.reverse(list);
         return list;
     }
 
