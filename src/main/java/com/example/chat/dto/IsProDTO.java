@@ -8,13 +8,14 @@ import lombok.Setter;
 @Setter
 public class IsProDTO {
     private String roomId;  //룸번호
-    private String userId;
+
+    private String kakaoId; //카카오 고유 번호
     private int isPro;
 
     @Builder
-    public IsProDTO(String roomId, String userId, int isPro){
+    public IsProDTO(String roomId, String kakaoId, int isPro){
         this.roomId = roomId;
-        this.userId = userId;
+        this.kakaoId = kakaoId;
         this.isPro = isPro;
     }
 }

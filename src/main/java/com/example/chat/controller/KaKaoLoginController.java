@@ -48,6 +48,7 @@ public class KaKaoLoginController {
             session.setMaxInactiveInterval(1800); // 1800 = 60 * 30 => 30분
             session.setAttribute("userId",userInfo.get("nickname"));
             session.setAttribute("accessToken", access_Token);
+            session.setAttribute("kakaoId",userInfo.get("id"));
         }
 
         return "redirect:/chat/room";
@@ -60,6 +61,7 @@ public class KaKaoLoginController {
         memberService.logout((String)session.getAttribute("accessToken"));
         session.removeAttribute("accessToken");
         session.removeAttribute("userId");
+        session.removeAttribute("kakaoId");
 
         return "redirect:/chat/room";
     }

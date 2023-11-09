@@ -14,7 +14,7 @@ public class VoteMessage {
     private String conrate; //반대비율
     private String userId; // 유저아이디
     private String topic; // 방이름
-
+    private String kakaoId; //카카오 고유 ID
     private String error; //중복처리 에러메세지
 
 

@@ -41,9 +41,10 @@ public class VoteController {
         System.out.println(message.getCon());
         System.out.println(message.getUserId());
         System.out.println(message.getTopic());
+        System.out.println(message.getKakaoId());
 
-        // UserId, RoomId로 중복체크 --> 동명이인 추가해야함(kakao_email로 하면될듯)
-        if(isProRepository.duplicate_check(message.getUserId(),message.getRoomId())>=1){
+        // kakaoId, RoomId로 중복체크
+        if(isProRepository.duplicate_check(message.getKakaoId(),message.getRoomId())>=1){
             message.setProrate(message.getProrate());
             message.setConrate(message.getConrate());
             message.setError("이미 투표 하셨습니다.");
@@ -54,7 +55,7 @@ public class VoteController {
 
         else{
             //isPro_table create
-            voteService.isProsave(message.getRoomId(),message.getUserId(),Integer.parseInt(message.getPro()));
+            voteService.isProsave(message.getRoomId(),message.getKakaoId(),Integer.parseInt(message.getPro()));
             //insert into or update
             informationService.update(message.getRoomId(),message.getPro(),message.getCon(),message.getTopic());
 

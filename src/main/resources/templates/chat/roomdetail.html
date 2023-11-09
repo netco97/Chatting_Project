@@ -57,7 +57,7 @@
     <div class="chat_content">
         <ul class="list-group">
             <li class="list-group-item" v-for="message in messages">
-                {{message.sender}} - {{message.message}}
+                {{message.sender}}{{message.isProType}} - {{message.message}}
             </li>
         </ul>
     </div>
@@ -72,6 +72,7 @@
 
     const roomId = [[${roomId}]];
     const userId = [[${session.userId}]];
+    const kakaoId = [[${session.kakaoId}]];
     let room = {};
 
     $(document).ready(function(){
@@ -90,7 +91,7 @@
     $(document).ready(function(){
     $.ajax({
         type : "GET",
-        url : "/chat/messageList/"+roomId,
+        url : "/chat/messageList/"+roomId+"/"+kakaoId,
         data : {},
         success : function (res){
             console.log("통신 성공");
@@ -99,7 +100,7 @@
             for (var i = 0; i < res.length; i++) {
             console.log(res[i].message);
             console.log(res[i].sender);
-            ul_list.append("<li class=\"list-group-item\">"+res[i].sender+" - "+res[i].message+"</li>");
+            ul_list.append("<li class=\"list-group-item\">"+res[i].sender+"("+res[i].isProType+")"+" - "+res[i].message+"</li>");
 			}
         },
         });
@@ -128,11 +129,18 @@
                 axios.get('/chat/room/'+this.roomId).then(response => { this.room = response.data; });
             },
             sendMessage: function() {
-                ws.send("/pub/chat/message", {}, JSON.stringify({type:'TALK', roomId:this.roomId, sender:this.sender, message:this.message}));
+                ws.send("/pub/chat/message", {}, JSON.stringify({type:'TALK', roomId:this.roomId, sender:this.sender, message:this.message, kakaoId:kakaoId}));
                 this.message = '';
             },
             recvMessage: function(recv) {
-                this.messages.push({"type":recv.type,"sender":recv.type=='ENTER'?'[알림]':recv.sender,"message":recv.message})
+                // 입장시 에는 isProType 출력 안하려고
+                if(recv.type=='ENTER'){
+                    this.messages.push({"type":recv.type,"sender":recv.type=='ENTER'?'[알림]':recv.sender,"message":recv.message, "isProType": ""});
+                }
+                // recv.type ==TALK일때는 이름(찬성 Or 반대)출력
+                else {
+                this.messages.push({"type":recv.type,"sender":recv.type=='ENTER'?'[알림]':recv.sender,"message":recv.message, "isProType": "("+recv.isProType+")"});
+                }
             }
         }
     });
@@ -142,6 +150,7 @@
         ws.connect({}, function(frame) {
             ws.subscribe("/sub/chat/room/"+vm.$data.roomId, function(message) {
                 var recv = JSON.parse(message.body);
+                console.log("recv test " + recv.isProType);
                 vm.recvMessage(recv);
             });
 
@@ -153,13 +162,13 @@
 
     // 투표 찬성 함수
     function pro_onClick(){
-        stompClient.send("/pub/message" , {}, JSON.stringify(
-        {'pro' : 1 , 'con' : 0, 'roomId' : roomId, 'userId' : userId, 'topic' : room.name}));
+        stompClient.send("/pub/message" , {}, JSON.stringify( //위에 뷰처럼 JSON으로 보내야할듯
+        {'pro' : 1 , 'con' : 0, 'roomId' : roomId, 'userId' : userId, 'topic' : room.name, 'kakaoId' : kakaoId}));
     }
 
     function con_onClick(){
         stompClient.send("/pub/message" , {}, JSON.stringify(
-        {'pro' : 0, 'con' : 1, 'roomId' : roomId, 'userId' : userId, 'topic' : room.name}));
+        {'pro' : 0, 'con' : 1, 'roomId' : roomId, 'userId' : userId, 'topic' : room.name, 'kakaoId' : kakaoId}));
     }
 
     // 투표 반대 함수

@@ -21,7 +21,7 @@ public class IsProEntity {
     private String roomId;
 
     @Column
-    private String userId;
+    private String kakaoId;
 
     @Column
     private int isPro;
@@ -29,7 +29,7 @@ public class IsProEntity {
     public static IsProEntity toIsProEntity(IsProDTO isProDTO) {
         IsProEntity isProEntity = new IsProEntity();
         isProEntity.roomId = isProDTO.getRoomId();
-        isProEntity.userId = isProDTO.getUserId();
+        isProEntity.kakaoId = isProDTO.getKakaoId();
         isProEntity.isPro = isProDTO.getIsPro();
 
         return isProEntity;

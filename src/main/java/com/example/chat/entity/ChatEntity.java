@@ -25,11 +25,15 @@ public class ChatEntity {
     @Column(nullable = false)
     private String message;
 
+    @Column(nullable = false)
+    private String kakaoId;
+
     public static ChatEntity toChatEntity(ChatMessage chatMessage) {
         ChatEntity chatEntity = new ChatEntity();
         chatEntity.roomId = chatMessage.getRoomId();
         chatEntity.sender = chatMessage.getSender();
         chatEntity.message = chatMessage.getMessage();
+        chatEntity.kakaoId = chatMessage.getKakaoId();
 
         return chatEntity;
     }

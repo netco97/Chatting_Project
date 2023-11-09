@@ -17,12 +17,12 @@ public class VoteService {
 
 
     //찬반 테이블 save
-    public void isProsave(String roomId, String userId, int pro) {
+    public void isProsave(String roomId, String kakaoId, int pro) {
 
         IsProDTO isProDTO = IsProDTO.
                     builder()
                     .roomId(roomId)
-                    .userId(userId)
+                    .kakaoId(kakaoId)
                     .isPro(pro)
                     .build();
         IsProEntity isProEntity = IsProEntity.toIsProEntity(isProDTO);

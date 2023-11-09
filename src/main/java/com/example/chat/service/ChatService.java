@@ -40,12 +40,13 @@ public class ChatService {
         return chatRoom;
     }
 
-    public void save(String roomId, String sender, String message){
+    public void save(String roomId, String sender, String message, String kakaoId){
         // message (json) to DB(Entity)
         ChatMessage chatMessage = ChatMessage.
                 builder()
                 .roomId(roomId)
                 .sender(sender)
+                .kakaoId(kakaoId)
                 .message(message).build();
 
         ChatEntity chatEntity = ChatEntity.toChatEntity(chatMessage);

@@ -13,6 +13,8 @@ public class ChatDTO {
     private String sender; // 메세지 보낸사람
     private String message; // 메세지
 
+    private String isProType;
+
 
     @Builder
     public ChatDTO(String roomId, String sender, String message){

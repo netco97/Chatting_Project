@@ -6,6 +6,12 @@ import org.springframework.data.jpa.repository.Query;
 
 public interface IsProRepository extends JpaRepository<IsProEntity,Long> {
 
-    @Query(value = "select count(*) from is_pro_table where user_id=?1 and room_id=?2" , nativeQuery = true)
-    int duplicate_check(String userId,String roomId);
+    @Query(value = "select count(*) from is_pro_table where kakao_id=?1 and room_id=?2" , nativeQuery = true)
+    int duplicate_check(String kakaoId,String roomId);
+
+    @Query(value = "SELECT is_pro from is_pro_table where kakao_id=?1 and room_id=?2", nativeQuery= true)
+    int isPro_check(String kakaoId, String roomId);
+
+    @Query(value = "SELECT count(is_pro) from is_pro_table where kakao_id=?1 and room_id=?2", nativeQuery= true)
+    int isPro_count_check(String kakaoId, String roomId);
 }
