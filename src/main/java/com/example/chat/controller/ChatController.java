@@ -6,14 +6,19 @@ import com.example.chat.dto.ChatMessage;
 import com.example.chat.dto.ChatRoom;
 import com.example.chat.service.ChatService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.coyote.Response;
+import org.springframework.messaging.MessageHeaders;
 import org.springframework.messaging.handler.annotation.MessageMapping;
+import org.springframework.messaging.simp.SimpMessageHeaderAccessor;
 import org.springframework.messaging.simp.SimpMessageSendingOperations;
+import org.springframework.messaging.simp.SimpMessageType;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.security.Principal;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -31,7 +36,7 @@ public class ChatController {
      * websocket "/pub/chat/message"로 들어오는 메시징을 처리한다.
      */
     @MessageMapping("/chat/message")
-    public void message(ChatMessage message) {
+    public void message(ChatMessage message, Principal principal) {
         if (ChatMessage.MessageType.ENTER.equals(message.getType()))
         {
             message.setMessage(message.getSender() + "님이 입장하셨습니다.");
@@ -49,12 +54,11 @@ public class ChatController {
         System.out.println("kakaoID : "+ message.getKakaoId());
         System.out.println("--------------------체크용------------------");
 
-        //Message to DB
+
         if(ChatMessage.MessageType.TALK.equals(message.getType()))
         {
-            chatService.save(roomId,sender,message_content,message.getKakaoId());
 
-            //유저 이름에 찬반 띄우는 condition
+            //유저가 투표를 했으면
             if(isProRepository.isPro_count_check(message.getKakaoId(),message.getRoomId())==1)
             {
                 if(isProRepository.isPro_check(message.getKakaoId(),message.getRoomId())==1){
@@ -65,15 +69,24 @@ public class ChatController {
                     message.setIsProType("반대");
                     System.out.println("반");
                 }
+                chatService.save(roomId,sender,message_content,message.getKakaoId());
+                messagingTemplate.convertAndSend("/sub/chat/room/" + message.getRoomId(), message);
             }
+
+            //유저가 투표를 하지 않았으면,
             else{
+                //messagingTemplate.convertAndSend("/user/"+message.getKakaoId()+"/queue/"+message.getRoomId(), message);
                 message.setIsProType("투표X");
+                message.setMessage("투표를 하지 않으셨습니다. 투표먼저 해주세요");
+                messagingTemplate.convertAndSendToUser(principal.getName(), "/queue/"+message.getRoomId(),message);
             }
-        }
 
-        messagingTemplate.convertAndSend("/sub/chat/room/" + message.getRoomId(), message);
+
     }
+}
 
+
+    // 최근 메세지 10개 로드
     @GetMapping("/chat/messageList/{roomId}/{kakaoId}")
     @ResponseBody
     public List<ChatDTO> listChat(@PathVariable String roomId, @PathVariable String kakaoId){

@@ -135,11 +135,11 @@
             recvMessage: function(recv) {
                 // 입장시 에는 isProType 출력 안하려고
                 if(recv.type=='ENTER'){
-                    this.messages.push({"type":recv.type,"sender":recv.type=='ENTER'?'[알림]':recv.sender,"message":recv.message, "isProType": ""});
+                    this.messages.push({"type":recv.type,"sender":'[알림]',"message":recv.message, "isProType": ""});
                 }
                 // recv.type ==TALK일때는 이름(찬성 Or 반대)출력
                 else {
-                this.messages.push({"type":recv.type,"sender":recv.type=='ENTER'?'[알림]':recv.sender,"message":recv.message, "isProType": "("+recv.isProType+")"});
+                this.messages.push({"type":recv.type,"sender":recv.sender,"message":recv.message, "isProType": "("+recv.isProType+")"});
                 }
             }
         }
@@ -153,12 +153,19 @@
                 console.log("recv test " + recv.isProType);
                 vm.recvMessage(recv);
             });
+            ws.subscribe("/user/queue/"+vm.$data.roomId, function(message){
+                var recv = JSON.parse(message.body);
+                console.log("user_Send테스트"+recv.message);
+                vm.recvMessage(recv);
+            });
 
             ws.send("/pub/chat/message", {}, JSON.stringify({type:'ENTER', roomId:vm.$data.roomId, sender:vm.$data.sender}));
         }, function(error) {
             alert("error : "+error);
         });
     }
+
+
 
     // 투표 찬성 함수
     function pro_onClick(){
