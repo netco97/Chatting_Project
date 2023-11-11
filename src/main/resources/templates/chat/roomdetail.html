@@ -190,8 +190,8 @@
         stompClient.subscribe("/sub/voteMessage/"+roomId, function (message) {
         let response = JSON.parse(message.body);
 
-        // 중복처리
-        if (response.error !== null) {
+        // 중복처리 (response.kakaoId == kakaoId 안하면 모든유저한테 경고)
+        if (response.error !== null & response.kakaoId == kakaoId) {
             alert(response.error);
             document.getElementById("pro_percentage").innerHTML = response.prorate;
             document.getElementById("con_percentage").innerHTML = response.conrate;

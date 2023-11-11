@@ -93,12 +93,14 @@ public class ChatController {
         System.out.println("roomId : "+ roomId);
         List<ChatDTO> list = chatService.listChat(roomId);
         for (ChatDTO chatDTO : list) {
-            if(isProRepository.isPro_count_check(kakaoId,roomId)==1)
+            if(isProRepository.isPro_count_check(chatDTO.getKakaoId(),roomId)==1)
             {
-                if(isProRepository.isPro_check(kakaoId,roomId)==1){
+                // 찬성이고, 본인 아이디면 본인 메세지는 찬성으로
+                if(isProRepository.isPro_check(chatDTO.getKakaoId(),roomId)==1){
                     chatDTO.setIsProType("찬성");
                 }
-                else if(isProRepository.isPro_check(kakaoId,roomId)==0){
+                // 반대이고, 본인 아이디면 본인 메세지는 반대로
+                else if(isProRepository.isPro_check(chatDTO.getKakaoId(),roomId)==0) {
                     chatDTO.setIsProType("반대");
                 }
             }
@@ -109,6 +111,7 @@ public class ChatController {
         }
 
         //orderby id desc 으로 불러온 내용을 front에서 제일최근(id가 가장높은 순으로 메세지를 출력하면 반대가 되므로 한번 reverse해주었음
+        // 프론트에서 어떻게 출력하냐에 따라서 반대로 설정하면될듯
         Collections.reverse(list);
         return list;
     }

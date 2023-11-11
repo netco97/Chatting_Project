@@ -13,13 +13,16 @@ public class ChatDTO {
     private String sender; // 메세지 보낸사람
     private String message; // 메세지
 
+    private String kakaoId; // kakaoId;
+
     private String isProType;
 
 
     @Builder
-    public ChatDTO(String roomId, String sender, String message){
+    public ChatDTO(String roomId, String sender, String message, String kakaoId){
         this.roomId = roomId;
         this.sender = sender;
         this.message = message;
+        this.kakaoId = kakaoId;
     }
 }
