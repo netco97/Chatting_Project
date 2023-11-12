@@ -20,11 +20,6 @@ import java.util.Map;
 @RequiredArgsConstructor
 @Controller
 public class VoteController {
-    private double pro_count = 0;
-    private double total_count = 0;
-    private double con_count  = 0;
-    private double pro_rate = 0;
-    private double con_rate = 0;
     private final SimpMessageSendingOperations messagingTemplate;
     private final VoteService voteService;
     private final InformationService informationService;

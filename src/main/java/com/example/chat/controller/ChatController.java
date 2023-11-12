@@ -16,6 +16,7 @@ import org.springframework.messaging.simp.SimpMessageType;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.security.Principal;
@@ -92,6 +93,8 @@ public class ChatController {
     public List<ChatDTO> listChat(@PathVariable String roomId, @PathVariable String kakaoId){
         System.out.println("roomId : "+ roomId);
         List<ChatDTO> list = chatService.listChat(roomId);
+
+        //Chat DTO에서 @builder 안해놓으면 값 안불러와짐 !!
         for (ChatDTO chatDTO : list) {
             if(isProRepository.isPro_count_check(chatDTO.getKakaoId(),roomId)==1)
             {
@@ -116,4 +119,32 @@ public class ChatController {
         return list;
     }
 
+    @GetMapping("/chat/messageList/prev/{roomId}/{kakaoId}")
+    @ResponseBody
+    public List<ChatDTO> prevChat(@PathVariable String roomId, @PathVariable String kakaoId, @RequestParam String id) {
+        List<ChatDTO> list = chatService.prevChat(roomId,Long.parseLong(id));
+        System.out.println("db_id출력 " + id);
+        for(ChatDTO chatDTO : list){
+            if(isProRepository.isPro_count_check(chatDTO.getKakaoId(),roomId)==1)
+            {
+                // 찬성이고, 본인 아이디면 본인 메세지는 찬성으로
+                if(isProRepository.isPro_check(chatDTO.getKakaoId(),roomId)==1){
+                    chatDTO.setIsProType("찬성");
+                }
+                // 반대이고, 본인 아이디면 본인 메세지는 반대로
+                else if(isProRepository.isPro_check(chatDTO.getKakaoId(),roomId)==0) {
+                    chatDTO.setIsProType("반대");
+                }
+            }
+            else{
+                chatDTO.setIsProType("투표X");
+            }
+            System.out.println(chatDTO);
+        }
+
+
+        //여기서는 front에서 append가 아닌 , prepend이므로 reverse를 하면 안됨.
+
+        return list;
+    }
 }

@@ -9,6 +9,8 @@ import lombok.ToString;
 @Setter
 @ToString
 public class ChatDTO {
+
+    private Long id;
     private String roomId; // 방번호
     private String sender; // 메세지 보낸사람
     private String message; // 메세지
@@ -19,7 +21,8 @@ public class ChatDTO {
 
 
     @Builder
-    public ChatDTO(String roomId, String sender, String message, String kakaoId){
+    public ChatDTO(Long id, String roomId, String sender, String message, String kakaoId){
+        this.id = id;
         this.roomId = roomId;
         this.sender = sender;
         this.message = message;

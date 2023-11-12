@@ -8,9 +8,12 @@ import org.springframework.data.jpa.repository.Query;
 import java.util.List;
 
 public interface ChatRepository extends JpaRepository<ChatEntity,Long> {
-    /*@Query(value = "select message,sender from chat_table where room_Id=?1 order by id desc", nativeQuery = true)
-    List<ChatDTO> select_chat(String roomId);*/
+
+    //SELECT * from chat_table where room_Id =? order by id desc limit 10
     List<ChatDTO> findTop10ByRoomIdOrderByIdDesc(String roomId);
 
-    // select id >> int 로 반환후 서비스에서 int값으로 findbyid?해볼까요?
+    /*@Query(value = "select * from chat_table where room_Id=?1 and id<?2 order by id desc limit 10" , nativeQuery = true)
+    List<ChatDTO> select_prev(String roomId, Long id);*/
+
+    List<ChatDTO> findTop10ByRoomIdAndIdLessThanOrderByIdDesc(String roomId,Long id);
 }

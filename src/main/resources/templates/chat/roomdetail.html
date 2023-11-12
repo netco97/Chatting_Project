@@ -44,6 +44,7 @@
 <div class="container" id="app" v-cloak>
     <div>
         <h2>{{room.name}}</h2>
+        <button class="prev_chat">이전채팅 불러오기</button>
     </div>
     <div class="input-group">
         <div class="input-group-prepend">
@@ -74,6 +75,7 @@
     const userId = [[${session.userId}]];
     const kakaoId = [[${session.kakaoId}]];
     let room = {};
+    let top_db = 0; //채팅 db id 가져오는 변수
 
     $(document).ready(function(){
     $.ajax({
@@ -88,6 +90,7 @@
         });
        });
 
+    //홈페이지 로드 챗 메시지 불러오기
     $(document).ready(function(){
     $.ajax({
         type : "GET",
@@ -98,6 +101,11 @@
             let ul_list = $(".list-group");
 
             for (var i = 0; i < res.length; i++) {
+            // 현재 채팅중 맨위에 채팅의 db의 id를 top에 담음
+            if(i==0)
+            {
+                top_db = res[i].id;
+            }
             console.log(res[i].message);
             console.log(res[i].sender);
             ul_list.append("<li class=\"list-group-item\">"+res[i].sender+"("+res[i].isProType+")"+" - "+res[i].message+"</li>");
@@ -106,6 +114,32 @@
         });
        });
 
+    // 버튼 클릭 이전챗 이벤트
+    $(function () {
+                    $('.prev_chat').on("click",getData);
+               });
+
+    function getData() {
+		$.ajax({
+			type:"GET",
+			url:"/chat/messageList/prev/"+roomId+"/"+kakaoId,
+			data : {"id" : top_db},
+			success:function(res){
+			let ul_list = $(".list-group");
+            for (var i = 0; i < res.length; i++) {
+
+                // 현재 채팅중 맨위에 채팅의 db의 id를 top에 담음
+                if(i==res.length-1)
+                {
+                    top_db = res[i].id;
+                }
+                console.log(res[i].message);
+                console.log(res[i].sender);
+                ul_list.prepend("<li class=\"list-group-item\">"+res[i].sender+"("+res[i].isProType+")"+" - "+res[i].message+"</li>");
+            }
+			},
+		})
+	}
 
     // websocket & stomp initialize
     var sock = new SockJS("/ws-stomp");
