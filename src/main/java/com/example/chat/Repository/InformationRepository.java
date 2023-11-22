@@ -1,5 +1,6 @@
 package com.example.chat.Repository;
 
+import com.example.chat.dto.ShowInfoDTO;
 import com.example.chat.entity.InformationEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
@@ -7,6 +8,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import javax.transaction.Transactional;
+import java.util.List;
 
 @Repository
 public interface InformationRepository extends JpaRepository<InformationEntity, String> {
@@ -22,5 +24,8 @@ public interface InformationRepository extends JpaRepository<InformationEntity, 
     int proCount(String roomId);
     @Query(value = "select con from information_table where room_Id=?1", nativeQuery = true)
     int conCount(String roomId);
+
+    /*@Query(value = "select * from information_table", nativeQuery = true)
+    List<ShowInfoDTO> select_info();*/
 
 }

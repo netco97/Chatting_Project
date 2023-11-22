@@ -16,4 +16,6 @@ public interface ChatRepository extends JpaRepository<ChatEntity,Long> {
     List<ChatDTO> select_prev(String roomId, Long id);*/
 
     List<ChatDTO> findTop10ByRoomIdAndIdLessThanOrderByIdDesc(String roomId,Long id);
+
+    Long countByRoomId(String roomId);
 }

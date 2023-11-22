@@ -2,14 +2,16 @@ package com.example.chat.service;
 
 import com.example.chat.Repository.InformationRepository;
 import com.example.chat.dto.InformationDTO;
-import com.example.chat.dto.VoteMessage;
+import com.example.chat.dto.ShowInfoDTO;
 import com.example.chat.entity.InformationEntity;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -56,5 +58,17 @@ public class InformationService {
         result.put("getConrate",con_rate);
 
         return result;
+    }
+
+    public List<ShowInfoDTO> showInfoDTOS() {
+        List<InformationEntity> list = informationRepository.findAll();
+
+
+        // findAll에서 Entity를 DTO로 변환하는 과정
+        return list.stream()
+                .map(
+                        l -> new ShowInfoDTO(l.getRoomId(), l.getPro(), l.getCon(), l.getTopic(),l.getCreatedDate())
+                )
+                .collect(Collectors.toList());
     }
 }
