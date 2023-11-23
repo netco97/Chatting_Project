@@ -8,6 +8,7 @@ import com.example.chat.entity.FileEntity;
 import com.example.chat.entity.InformationEntity;
 import com.example.chat.service.ChatService;
 import com.example.chat.service.FileService;
+import com.example.chat.service.InformationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -27,6 +28,7 @@ public class ChatRoomController {
     private final FileService fileService;
     private final InformationRepository informationRepository;
     private final ChatRepository chatRepository;
+    private final InformationService informationService;
 
 
     // 채팅 리스트 화면
@@ -34,6 +36,7 @@ public class ChatRoomController {
     public String rooms() {
         return "/chat/room";
     }
+
 
 
     // 모든 채팅방 목록 반환 (room 이름반환 ,img처리,다하는부분)
@@ -77,6 +80,7 @@ public class ChatRoomController {
 
         // roomId chatSerivce에서 뺴와서 파일서비스에 roomId를 넣어서 boradIdx를 바꾸기
         fileService.addBoard(FileEntity.builder().build(),files,roomId);
+        informationService.save(roomId,name);
 
         /*List<ChatDTO> chatDTOS = chatRepository.select_chat(roomId);
         for (ChatDTO chatDTO : chatDTOS){

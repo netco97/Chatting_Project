@@ -75,13 +75,16 @@ let data = [
     },*/
 ]
 
-axios.get('api/information')
+/*axios.get('api/information')
   .then((res)=>{
-        var jsonArr = JSON.parse(res);
-        console.log(jsonArr);
+        for(var i=0; i<res.data.length;i++)
+        {
+            console.log(res.data[i]);
+        }
+
      }
   )
-  .catch((Error)=>{console.log(Error)})
+  .catch((Error)=>{console.log(Error)})*/
 
 
 export default data;

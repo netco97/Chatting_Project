@@ -1,13 +1,20 @@
 import logo from './logo.svg';
 import './App.css';
-import { useState } from 'react';
-import data from './data';
+import { useState , useEffect} from 'react';
 
 function App() {
   let [dark, isDark] = useState(false);
   let [open, isOpen] = useState(false);
   let [modalData, setModalData] = useState({});
-  let [db] = useState(data);
+  let [db, setDB] = useState([]);
+
+
+  useEffect(()=>{
+      fetch("/api/information").then(res => res.json()).then(data=>setDB(data));
+      console.log(db);
+    }, []);
+
+
 
   return (
     <section className="bg-white dark: bg-zinc-900">

@@ -2,8 +2,10 @@ package com.example.chat.service;
 
 import com.example.chat.Repository.InformationRepository;
 import com.example.chat.dto.InformationDTO;
+import com.example.chat.dto.KakaoDTO;
 import com.example.chat.dto.ShowInfoDTO;
 import com.example.chat.entity.InformationEntity;
+import com.example.chat.entity.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -16,7 +18,23 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 public class InformationService {
-        private final InformationRepository informationRepository;
+    private final InformationRepository informationRepository;
+
+    public void save(String roomId, String name) {
+        //API to DB(ENTITY)
+        //KakaoDTO kakaoDTO = new KakaoDTO(Long.parseLong(id), nickname, email);
+        //builder 패턴으로 바꿔봄
+        InformationDTO informationDTO = InformationDTO.
+                builder()
+                .roomId(roomId)
+                .pro(0)
+                .con(0)
+                .topic(name)
+                .build();
+
+        InformationEntity informationEntity = InformationEntity.toInformationEntity(informationDTO);
+        informationRepository.save(informationEntity);
+    }
 
     public void update(String roomId,String pro,String con,String topic) {
         InformationDTO informationDTO = new InformationDTO(roomId,Integer.parseInt(pro),Integer.parseInt(con),topic);

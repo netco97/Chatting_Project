@@ -8,20 +8,21 @@ import lombok.*;
 
 public class ShowInfoDTO {
     private String roomId; //룸아이디
-    private int pro; //찬성수
-    private int con; //반대수
+    private int pros; //찬성수
+    private int cons; //반대수
     private String topic; //방이름
-    private String cre_date; //생성날짜
+    private String date; //생성날짜
     private String reply; //채팅방 메세지 수
-
+    private String period; //기간
+    private boolean isOpened; //방open유무
 
 
     @Builder
-    public ShowInfoDTO(String roomId, int pro, int con, String topic, String cre_date) {
+    public ShowInfoDTO(String roomId, int pros, int cons, String topic, String cre_date) {
         this.roomId = roomId;
-        this.pro = pro;
-        this.con = con;
+        this.pros = pros;
+        this.cons = cons;
         this.topic = topic;
-        this.cre_date = cre_date;
+        this.date = cre_date;
     }
 }

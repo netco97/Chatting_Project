@@ -40,6 +40,7 @@ public class ChatController {
     public void message(ChatMessage message, Principal principal) {
         if (ChatMessage.MessageType.ENTER.equals(message.getType()))
         {
+
             message.setMessage(message.getSender() + "님이 입장하셨습니다.");
             //message.setKakaoId(message.getKakaoId()); 막 입장해서 받을수가 없네. 딱히필요없으니 배제
         }
