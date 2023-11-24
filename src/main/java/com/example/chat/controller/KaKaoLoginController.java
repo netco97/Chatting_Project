@@ -1,33 +1,27 @@
 package com.example.chat.controller;
 
-import com.example.chat.dto.KakaoDTO;
 import com.example.chat.service.MemberService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.servlet.ModelAndView;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.HashMap;
+import java.util.Map;
 
-import static org.springframework.web.bind.annotation.RequestMethod.GET;
-
-@Controller
+@RestController
 @RequiredArgsConstructor
 public class KaKaoLoginController {
-
     private final MemberService memberService;
 
-    @GetMapping("/login")
+    /*@GetMapping("/login")
     public String login() {
         return "/login";
-    }
+    }*/
 
     @GetMapping("/login/kakao")
-    public String kakaoLogin(@RequestParam(value = "code", required = false) String code, HttpSession session) throws Exception {
+    public Map<String, Object> kakaoLogin(@RequestParam(value = "code", required = false) String code, HttpSession session) throws Exception {
         System.out.println("#########" + code);
         String access_Token = memberService.getAccessToken(code);
 
@@ -51,7 +45,14 @@ public class KaKaoLoginController {
             session.setAttribute("kakaoId",userInfo.get("id"));
         }
 
-        return "redirect:/chat/room";
+        Map<String, Object> sessionStore = new HashMap<>();
+        sessionStore.put("userId",session.getAttribute("userId"));
+        sessionStore.put("kakaoId",session.getAttribute("kakaoId"));
+
+        System.out.println(sessionStore.get("userId"));
+        System.out.println(sessionStore.get("kakaoId"));
+
+        return sessionStore;
     }
 
     @GetMapping("/logout")

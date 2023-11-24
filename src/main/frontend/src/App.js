@@ -1,41 +1,87 @@
 import logo from './logo.svg';
 import './App.css';
-import { useState , useEffect} from 'react';
+import { useState, useEffect } from 'react';
+import { KAKAO_AUTH_URL } from './OAuth';
+import {Routes, Route, Link} from 'react-router-dom';
+import LoginHandler from './loginHandler';
 
 function App() {
   let [dark, isDark] = useState(false);
   let [open, isOpen] = useState(false);
   let [modalData, setModalData] = useState({});
+  const [menuOpen, setMenuOpen] = useState(false);
+
+  const toggleMenu = () => {
+    setMenuOpen(!menuOpen);
+  };
+
   let [db, setDB] = useState([]);
-
-
-  useEffect(()=>{
-      fetch("/api/information").then(res => res.json()).then(data=>setDB(data));
-      console.log(db);
-    }, []);
-
-
+  useEffect(() => {
+    fetch("/api/information").then(res => res.json()).then(data => setDB(data)).catch((error) => {
+      console.log("에러 발생:", error); // 에러 메시지 출력
+    });;
+    console.log(db);
+  }, []);
 
   return (
     <section className="bg-white dark: bg-zinc-900">
 
-      <div className={"container px-6 py-10 mx-auto" + (open == true ? " blur" : "")}>
-        <h1 className="w-48 h-2 mx-auto bg-gray-200 rounded-lg dark:bg-gray-800"></h1>
+      <Routes>
+        <Route path="/login/kakao" element={<LoginHandler/>}></Route>
+      </Routes>
 
-        <div className="grid grid-cols-1 gap-8 mt-8 xl:mt-12 xl:gap-12 sm:grid-cols-2 xl:grid-cols-3 lg:grid-cols-3">
-          {
-            db.map(function (a, i) {
-              return (
-                <Card id={a.id} topic={a.topic} pros={a.pros} cons={a.cons} date={a.date} period={a.period} reply={a.reply} isOpen={isOpen} open={open} setModalData={setModalData} />
-              )
-            })
-          }
+      <div className={"container px-6 py-10 mx-auto" + (open == true ? " blur" : "")}>
+        <div id="menuToggle" className="cursor-pointer absolute top-0 right-0 m-5" onClick={toggleMenu}>
+          <div className="h-1 w-6 bg-gray-700 my-1"></div>
+          <div className="h-1 w-6 bg-gray-700 my-1"></div>
+          <div className="h-1 w-6 bg-gray-700 my-1"></div>
         </div>
+        <div
+          className={`menu-container fixed top-0 right-0 h-full bg-gray-800 w-64 transform transition-transform duration-300 ${menuOpen ? 'translate-x-0' : 'translate-x-full'
+            }`}
+        >
+          <div className="menu p-8 text-white">
+          <div className="flex justify-end">
+            <button
+              onClick={toggleMenu}
+              className="p-2 bg-gray-600 hover:bg-gray-700 text-white rounded-full"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="h-6 w-6"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
+                  d="M6 18L18 6M6 6l12 12"
+                />
+              </svg>
+            </button>
+          </div>
+            <a href={KAKAO_AUTH_URL}><img src="https://cdn.imweb.me/upload/S20210304872ba49a108a8/89a68d1e3674a.png" alt="kakao Logo" className="w-8 h-8 mr-2 float-left"/><span className="flex-grow">카카오 로그인</span></a>
+
+          </div>
+        </div>
+      <h1 className="w-48 h-2 mx-auto bg-gray-200 rounded-lg dark:bg-gray-800"></h1>
+      <div className="grid grid-cols-1 gap-8 mt-8 xl:mt-12 xl:gap-12 sm:grid-cols-2 xl:grid-cols-3 lg:grid-cols-3">
+        {
+          db.map(function (a, i) {
+            return (
+              <Card id={a.id} topic={a.topic} pros={a.pros} cons={a.cons} date={a.date} period={a.period} reply={a.reply} isOpen={isOpen} open={open} setModalData={setModalData} />
+            )
+          })
+        }
       </div>
+    </div>
       {
-        open == true ? <Modal isOpen={isOpen} modalData={modalData} /> : null
-      }
-    </section>
+    open == true ? <Modal isOpen={isOpen} modalData={modalData} /> : null
+
+  }
+    </section >
   );
 }
 
@@ -56,6 +102,9 @@ function Card(props) {
             <h4 className="text-xl font-bold text-navy-700 text-black dark:text-white  text-center mt-3 w-full">
               {props.topic}
             </h4>
+            <div className="w-full h-6 bg-gray-200 rounded-full dark:bg-gray-700">
+              <div className="h-6 bg-blue-600 rounded-full dark:bg-blue-500" style={{ width: props.pros + props.cons > 0 ? `${((props.pros / (props.pros + props.cons)) * 100).toFixed(2)}%` : '0%' }}></div>
+            </div>
             <div className="mt-6 mb-3 w-full flex justify-around">
               <div className="flex flex-col items-center ">
                 <p className="text-2xl font-bold text-navy-700 text-black dark:text-white whitespace-nowrap">{props.reply}</p>
@@ -77,10 +126,10 @@ function Card(props) {
           </div>
         </div>
       </div>
-      <h1 className="w-56 h-6 mt-4 bg-gray-200 rounded-lg dark:bg-gray-700 dark:text-white">
+      <h1 className="w-56 h-6 mt-4 bg-gray-200 rounded-lg dark:bg-zinc-800 dark:text-white">
         <span className="ml-3 font-bold">{props.date} - {date.getFullYear()}-{(date.getMonth() + 1).toString().padStart(2, '0')}-{date.getDate().toString().padStart(2, '0')}</span>
       </h1>
-      <p className="w-24 h-6 mt-4 bg-gray-200 rounded-lg dark:bg-gray-700 text-center">
+      <p className="w-24 h-6 mt-4 bg-gray-200 rounded-lg dark:bg-zinc-800 text-center">
         <span className="font-bold text-sm dark:text-white">D{((Math.round((date.getTime() - new Date().getTime()) / (1000 * 60 * 60 * 24))) * -1)}</span>
       </p>
     </div>
@@ -88,6 +137,11 @@ function Card(props) {
 }
 
 function Modal(props) {
+  let [pros, setPros] = useState(); // 찬성 갯수
+  let [cons, setCons] = useState(); // 반대 갯수
+  let [chat_pro, setChat_pro] = useState([]); // 찬성채팅들
+  let [chat_con, setChat_con] = useState([]); // 반대채팅들
+
   return (
     <div className="w-11/12 rounded-3xl p-10 flex flex-col justify-center fixed bg-white top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
       <div className="left-10 justify-start">
@@ -119,7 +173,7 @@ function Modal(props) {
                 <div className="text-sm align-text-bottom text-right">
                   나
                 </div>
-                그럴 수도 있지
+                그럴 수도 있지
                 <div className="text-sm w-full align-text-bottom text-right">
                   2023.10.08 20:08
                 </div>
@@ -132,7 +186,7 @@ function Modal(props) {
                 <div className="text-sm align-text-bottom text-right">
                   나
                 </div>
-                군대 갔다 와봐라 이렇게 되나 안되나
+                군대 갔다 와봐라 이렇게 되나 안되나
                 <div className="text-sm w-full align-text-bottom text-right">
                   2023.10.08 20:09
                 </div>
@@ -144,7 +198,7 @@ function Modal(props) {
                 <div className="text-sm align-text-bottom text-left">
                   고O몽
                 </div>
-                반대표 틀딱들 틀니 압수해버려야 함
+                반대표 틀딱들 틀니 압수해버려야 함
                 <div className="text-sm w-full align-text-bottom text-right">
                   2023.10.08 20:13
                 </div>

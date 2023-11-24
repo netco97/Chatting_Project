@@ -48,6 +48,9 @@ images/
 # testing
 /src/main/frontend/coverage
 
+#env
+/src/main/frontend/.env
+
 # production
 /src/main/frontend/build
 
