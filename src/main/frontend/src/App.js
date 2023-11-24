@@ -63,7 +63,6 @@ function App() {
             </button>
           </div>
             <a href={KAKAO_AUTH_URL}><img src="https://cdn.imweb.me/upload/S20210304872ba49a108a8/89a68d1e3674a.png" alt="kakao Logo" className="w-8 h-8 mr-2 float-left"/><span className="flex-grow">카카오 로그인</span></a>
-
           </div>
         </div>
       <h1 className="w-48 h-2 mx-auto bg-gray-200 rounded-lg dark:bg-gray-800"></h1>
