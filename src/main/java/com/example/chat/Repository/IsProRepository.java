@@ -14,4 +14,6 @@ public interface IsProRepository extends JpaRepository<IsProEntity,Long> {
 
     @Query(value = "SELECT count(is_pro) from is_pro_table where kakao_id=?1 and room_id=?2", nativeQuery= true)
     int isPro_count_check(String kakaoId, String roomId);
+
+    Long countByKakaoId(String kakaoId);
 }

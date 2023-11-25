@@ -18,4 +18,6 @@ public interface ChatRepository extends JpaRepository<ChatEntity,Long> {
     List<ChatDTO> findTop10ByRoomIdAndIdLessThanOrderByIdDesc(String roomId,Long id);
 
     Long countByRoomId(String roomId);
+
+    Long countByKakaoId(String kakaoId);
 }

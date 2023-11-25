@@ -14,12 +14,15 @@ public class InformationDTO {
 
     private String topic;
 
+    private String period;
+
     @Builder
-    public InformationDTO(String roomId, int pro, int con,String topic){
+    public InformationDTO(String roomId, int pro, int con,String topic, String period){
         this.roomId = roomId;
         this.pro = pro;
         this.con = con;
         this.topic = topic;
+        this.period = period;
     }
 
     public static InformationDTO toInformationDTO(InformationEntity informationEntity){
@@ -28,6 +31,7 @@ public class InformationDTO {
         informationDTO.setPro(informationEntity.getPro());
         informationDTO.setCon(informationEntity.getCon());
         informationDTO.setTopic(informationEntity.getTopic());
+        informationDTO.setPeriod(informationEntity.getPeriod());
 
         return informationDTO;
     }

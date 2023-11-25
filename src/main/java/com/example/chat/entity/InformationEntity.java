@@ -28,6 +28,9 @@ public class InformationEntity extends BaseTimeEntity{
     @Column
     private String Topic;
 
+    @Column
+    private String period;
+
 
     public static InformationEntity toInformationEntity(InformationDTO informationDTO) {
         InformationEntity informationEntity = new InformationEntity();
@@ -35,6 +38,7 @@ public class InformationEntity extends BaseTimeEntity{
         informationEntity.Pro = informationDTO.getPro();
         informationEntity.Con = informationDTO.getCon();
         informationEntity.Topic = informationDTO.getTopic();
+        informationEntity.period = informationDTO.getPeriod();
 
         return informationEntity;
     }

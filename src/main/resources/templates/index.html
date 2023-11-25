@@ -64,7 +64,6 @@
     const menuToggle = document.getElementById("menuToggle");
     const closeMenu = document.getElementById("closeMenu");
     const menuContainer = document.querySelector(".menu-container");
-
     menuToggle.addEventListener("click", () => {
         menuContainer.classList.remove("translate-x-full");
     });
@@ -72,6 +71,7 @@
     closeMenu.addEventListener("click", () => {
         menuContainer.classList.add("translate-x-full");
     });
+
 
     getRoomInformations();
 

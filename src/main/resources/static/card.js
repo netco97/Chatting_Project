@@ -1,6 +1,7 @@
-function createHTMLElement(data) {
+function createCard(data) {
+    console.log(data);
     return `
-    <div class="w-full card" topic-id="${data.topicId}">
+    <div class="w-full card" topic-id="${data.roomId}" onclick="window.location.href='topicRoom?roomId='+'${data.roomId}'">
 
     <div class="w-full h-64 bg-gray-300 rounded-lg dark:bg-gray-600 flex items-center">
       <div class="w-full h-64 bg-white dark:bg-zinc-800 h-52 rounded-lg">
@@ -24,46 +25,68 @@ function createHTMLElement(data) {
             </div>
             <div class="flex flex-col items-center justify-center">
               <p class="text-2xl font-bold text-navy-700 text-black dark:text-white whitespace-nowrap">
-                ${data.population}위
+                1위
               </p>
-              <p class="text-sm font-normal text-gray-600 dark:text-white whitespace-nowrap">인기</p>
+                        <p class="text-sm font-normal text-gray-600 dark:text-white whitespace-nowrap">인기</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <h1 class="w-56 h-6 mt-4 bg-gray-200 rounded-lg dark:bg-zinc-800 dark:text-white">
+                <span class="ml-3 font-bold">${data.date} - ${data.date}</span>
+              </h1>
+              <p class="w-24 h-6 mt-4 bg-gray-200 rounded-lg dark:bg-zinc-800 text-center">
+                <span class="font-bold text-sm dark:text-white">D - ${data.period}</span>
+              </p>
             </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <h1 class="w-56 h-6 mt-4 bg-gray-200 rounded-lg dark:bg-zinc-800 dark:text-white">
-      <span class="ml-3 font-bold">${data.date} - ${data.date}</span>
-    </h1>
-    <p class="w-24 h-6 mt-4 bg-gray-200 rounded-lg dark:bg-zinc-800 text-center">
-      <span class="font-bold text-sm dark:text-white">D - ${data.period}</span>
-    </p>
-  </div>
-    `;
+              `;
+          }
+
+          // 생성할 데이터 배열
+          const dataItems = [
+              { topicId: 'ABCD', topic: 'topic 1', reply: 1234, pros: 232, cons: 123, population: 2, date: '2023.11.25', period: 15 },
+              { topicId: 'EFGH', topic: 'topic 2', reply: 124, pros: 23, cons: 82, population: 3, date: '2023.11.21', period: 12 },
+              { topicId: 'IJKL', topic: 'topic 3', reply: 12324, pros: 9312, cons: 1243, population: 1, date: '2023.11.23', period: 1 },
+          ];
+
+
+
+          // 데이터 배열을 순회하면서 HTML 요소 생성 후 컨테이너에 추가
+          const cardContainer = document.getElementById('cardContainer');
+          /*
+          dataItems.forEach(itemData => {
+              const elementHTML = createHTMLElement(itemData);
+              elementContainer.innerHTML += elementHTML;
+          });
+
+          let cards = document.querySelectorAll('.card');
+
+          cards.forEach(card => {
+              card.addEventListener('click', function(){
+                  const topic = card.getAttribute('topic-id');
+                  window.location.href = 'topicRoom.html?topic='+topic;
+              });
+          });
+          */
+function setCards(data){
+   for(item in data){
+      const card = createCard(data[item]);
+      cardContainer.innerHTML += card;
+   }
 }
 
-// 생성할 데이터 배열
-const dataItems = [
-    { topicId: 'ABCD', topic: 'topic 1', reply: 1234, pros: 232, cons: 123, population: 2, date: '2023.11.25', period: 15 },
-    { topicId: 'EFGH', topic: 'topic 2', reply: 124, pros: 23, cons: 82, population: 3, date: '2023.11.21', period: 12 },
-    { topicId: 'IJKL', topic: 'topic 3', reply: 12324, pros: 9312, cons: 1243, population: 1, date: '2023.11.23', period: 1 },
-];
-
-
-
-// 데이터 배열을 순회하면서 HTML 요소 생성 후 컨테이너에 추가
-const elementContainer = document.getElementById('cardContainer');
-
-dataItems.forEach(itemData => {
-    const elementHTML = createHTMLElement(itemData);
-    elementContainer.innerHTML += elementHTML;
-});
-
-let cards = document.querySelectorAll('.card');
-
-cards.forEach(card => {
-    card.addEventListener('click', function(){
-        const topic = card.getAttribute('topic-id');
-        window.location.href = 'topicRoom?topic='+topic;
-    });
-});
+function getRoomInformations(){
+    const xhr = new XMLHttpRequest();
+    xhr.open('GET', '/api/information', true);
+    xhr.send();
+    xhr.onload = () => {
+        if (xhr.status == 200) {
+            console.log("success ! !");
+            let data = JSON.parse(xhr.response);
+            setCards(data);
+        } else {
+            console.log("fail ! !");
+        }
+    }
+}

@@ -1,4 +1,4 @@
-package com.example.chat.config;
+/*package com.example.chat.config;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
@@ -19,3 +19,4 @@ public class ImageConfiguration implements WebMvcConfigurer {
 
     }
 }
+*/

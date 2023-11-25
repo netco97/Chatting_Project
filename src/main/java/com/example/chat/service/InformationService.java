@@ -20,7 +20,7 @@ import java.util.stream.Collectors;
 public class InformationService {
     private final InformationRepository informationRepository;
 
-    public void save(String roomId, String name) {
+    public void save(String roomId, String name, String period) {
         //API to DB(ENTITY)
         //KakaoDTO kakaoDTO = new KakaoDTO(Long.parseLong(id), nickname, email);
         //builder 패턴으로 바꿔봄
@@ -30,6 +30,7 @@ public class InformationService {
                 .pro(0)
                 .con(0)
                 .topic(name)
+                .period(period)
                 .build();
 
         InformationEntity informationEntity = InformationEntity.toInformationEntity(informationDTO);
@@ -37,7 +38,14 @@ public class InformationService {
     }
 
     public void update(String roomId,String pro,String con,String topic) {
-        InformationDTO informationDTO = new InformationDTO(roomId,Integer.parseInt(pro),Integer.parseInt(con),topic);
+        //InformationDTO informationDTO = new InformationDTO(roomId,Integer.parseInt(pro),Integer.parseInt(con),topic);
+        InformationDTO informationDTO = InformationDTO.
+                builder()
+                .roomId(roomId)
+                .pro(0)
+                .con(0)
+                .topic(topic)
+                .build();
         InformationEntity informationEntity = InformationEntity.toInformationEntity(informationDTO);
 
 

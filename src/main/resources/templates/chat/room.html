@@ -36,7 +36,6 @@
         </div>
         <div class="form-control" v-on:keyup.enter="createRoom">
             <input type="text" v-model="room_name" name="room_name">
-            <input type="file"  name="file_name">
             <div class="input-group-append">
                 <button class="btn btn-primary" type="button" @click="createRoom">채팅방 개설</button>
             </div>
@@ -45,7 +44,7 @@
     <ul class="list-group">
         <li class="list-group-item list-group-item-action" v-for="item in chatrooms" v-bind:key="item.roomId" v-on:click="enterRoom(item.roomId)">
             {{item.name}}
-            <img :src='`${item.img_path}`' height="200" width="200"/>
+            <!--<img :src='`${item.img_path}`' height="200" width="200"/>-->
         </li>
     </ul>
 </div>
@@ -88,22 +87,11 @@
                     return;
                 } else {
 
-                    //var params = new URLSearchParams();
-                    //params.append("name",this.room_name);
-                    let fileInput = document.querySelector("input[name=file_name]");
-                    console.log(fileInput);
-                    let fileObj = fileInput.files[0];
 
-                    console.log(fileObj);
-
-                    let formData = new FormData();
-
-                    formData.append("uploadFile",fileObj);
-                    formData.append("room_name",this.room_name);
-
-                    axios.post('/chat/room', formData, {
-                        header: {"Content-Type": 'multipart/form-data',
-                        },
+            axios.post('/chat/room',null, {
+                        params: {
+                            "topic": this.room_name
+                        }
                       })
                         .then(
                             response => {

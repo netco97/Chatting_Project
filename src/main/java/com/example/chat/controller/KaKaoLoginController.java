@@ -46,6 +46,7 @@ public class KaKaoLoginController {
         //세션 로직
         if (userInfo.get("email")!=null){
             session.setMaxInactiveInterval(1800); // 1800 = 60 * 30 => 30분
+            session.setAttribute("isLoggedIn", true);
             session.setAttribute("userId",userInfo.get("nickname"));
             session.setAttribute("accessToken", access_Token);
             session.setAttribute("kakaoId",userInfo.get("id"));

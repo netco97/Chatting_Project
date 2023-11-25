@@ -174,6 +174,7 @@ public class MemberService {
                 .k_number(Long.parseLong(id))
                 .k_name(nickname)
                 .k_email(email)
+                .isAdmin(0)
                 .build();
         User user = User.toUserEntity(kakaoDTO);
         memberRepository.save(user);

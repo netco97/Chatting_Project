@@ -24,6 +24,8 @@ public interface InformationRepository extends JpaRepository<InformationEntity, 
     int proCount(String roomId);
     @Query(value = "select con from information_table where room_Id=?1", nativeQuery = true)
     int conCount(String roomId);
+    @Query(value = "select topic from information_table where room_id=?1", nativeQuery = true)
+    String Select_topic(String roomId);
 
     /*@Query(value = "select * from information_table", nativeQuery = true)
     List<ShowInfoDTO> select_info();*/

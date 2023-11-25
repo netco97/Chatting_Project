@@ -21,12 +21,16 @@ public class User {
     @Column(nullable = false)
     private String k_email;
 
+    @Column(nullable = false)
+    private int isAdmin;
+
     public static User toUserEntity(KakaoDTO kakaoDTO)//DTO to Entity
     {
         User user = new User();
         user.k_number = kakaoDTO.getK_number();
         user.k_name = kakaoDTO.getK_name();
         user.k_email = kakaoDTO.getK_email();
+        user.isAdmin = kakaoDTO.getIsAdmin();
 
         return user;
     }
