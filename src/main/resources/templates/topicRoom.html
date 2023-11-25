@@ -4,10 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Colosseum</title>
-    <link rel="stylesheet" th:href="@{/css/main.css}"/>
+    <script src="https://cdn.tailwindcss.com"></script>
     <script src="/webjars/jquery/jquery.min.js"></script>
     <script>
         const roomId = `[[${roomId}]]`;
+        const kakaoId = `[[${session.kakaoId}]]`;
         console.log("roomId 확인 : " + roomId);
     </script>
     <style>
@@ -22,6 +23,23 @@
     </style>
 </head>
 <body class="bg-zinc-900">
+<div id="alertModal" class="hidden fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full z-50">
+
+    <!-- 모달 내용 -->
+    <div class="relative top-20 mx-auto p-5 border w-96 shadow-lg rounded-md bg-white">
+        <div class="mt-3 text-center">
+            <h3 class="text-lg leading-6 font-medium text-gray-900" id="alertModalTitle">
+                Warning!
+            </h3>
+            <div class="mt-2 px-7 py-3">
+                <p class="text-sm text-gray-500" id="alertModalBody">
+                    Something went wrong.
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
 <div class="left-10 justify-start absolute top-10 z-50">
     <div class="flex items-center justify-start rounded">
         <button class="bg-gray-700 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded shadow" onclick="goBack()">
@@ -34,14 +52,14 @@
     <div class="text-4xl font-bold mb-10 flex justify-center text-white" th:text="${topic}">
     </div>
     <div class="w-full flex justify-center mb-10">
-        <div class="pro bg-gray-700 text-white border-solid border-gray-500 border-2 h-5 w-12 table-cell text-center text-sm rounded-3xl hover:cursor-pointer">찬성</div>
+        <div class="pro bg-gray-700 text-white border-solid border-gray-500 border-2 h-5 w-12 table-cell text-center text-sm rounded-3xl hover:cursor-pointer" onclick="sendVote(1)" >찬성</div>
         <div class="proPercentage mx-3 font-bold w-14 text-center text-white" th:text="${view_pro_rate}"></div>
         <div class="w-1/2 h-5 rounded-lg bg-gray-300 flex">
             <div class="proGage h-full bg-yellow-300 rounded-l-lg w-1/4 text-center" th:style="'width:'+${view_pro_rate}+'%'" th:classappend="${view_pro_rate == '100.0'}? 'rounded-r-lg' : ''"></div>
             <div class="conGage h-full bg-blue-400 rounded-r-lg w-3/4 text-center" th:style="'width:'+${view_con_rate}+'%'" th:classappend="${view_con_rate == '100.0'}? 'rounded-l-lg' : ''"></div>
         </div>
         <div class="conPercentage mx-3 font-bold w-14 text-center text-white" th:text="${view_con_rate}"></div>
-        <div class="con bg-gray-700 text-white border-solid border-gray-500 border-2 h-5 w-12 table-cell text-center text-sm rounded-3xl hover:cursor-pointer">반대</div>
+        <div class="con bg-gray-700 text-white border-solid border-gray-500 border-2 h-5 w-12 table-cell text-center text-sm rounded-3xl hover:cursor-pointer" onclick="sendVote(0)">반대</div>
     </div>
     <div class="flex h-full">
         <!--section A-->
@@ -68,9 +86,86 @@
     </div>
 </div>
 </body>
+
+<script src="/webjars/sockjs-client/1.5.1/sockjs.min.js"></script>
+<script src="/webjars/stomp-websocket/2.3.4/stomp.min.js"></script>
 <script>
+
+
     function goBack() {
         window.history.back();
+    }
+
+    var socket = new SockJS('/ws');
+    var stompClient = Stomp.over(socket);
+
+    stompClient.connect({}, function (frame) {
+        console.log('Connected: ' + frame);
+        stompClient.subscribe("/sub/topic/" + roomId, function (message) {
+            let response = JSON.parse(message.body);
+            console.log(response);
+            if (response.type == 'VOTE') {
+                console.log('VOTE!!!');
+                if (response.isSuccess == 'success') {
+                    const proGage = document.querySelector('.proGage');
+                    const conGage = document.querySelector('.conGage');
+                    const proPercentage = document.querySelector('.proPercentage');
+                    const conPercentage = document.querySelector('.conPercentage');
+                    const proPercent = response.proTotal == 0 ? 0+'%' : (response.proTotal / (response.proTotal + response.conTotal) * 100).toFixed(2);
+                    const conPercent = response.conTotal == 0 ? 0+'%' : (response.conTotal / (response.proTotal + response.conTotal) * 100).toFixed(2);
+                    proGage.style.width = (proPercent + '%');
+                    conGage.style.width = (conPercent + '%');
+                    if(proPercent == 100){
+                        proGage.classList.add("rounded-r-lg");
+                    }else{
+                        proGage.classList.remove("rounded-r-lg");
+                    }
+                    if(conPercent == 100){
+                        conGage.classList.add("rounded-l-lg");
+                    }else{
+                        conGage.classList.remove("rounded-l-lg");
+                    }
+                    proPercentage.innerText = response.proTotal;
+                    conPercentage.innerText = response.conTotal;
+                }
+                else if (response.isSuccess == 'fail') {
+                    showAlert("경고", response.error);
+                }
+
+            } else if (response.type == 'MSG') {
+                console.log('MSG!!!!');
+            }
+        });
+    });
+
+
+
+    function showAlert(title, message) {
+        document.getElementById('alertModalTitle').innerText = title;
+        document.getElementById('alertModalBody').innerText = message;
+
+        document.getElementById('alertModal').classList.remove('hidden');
+
+        // 1초 후에 모달을 자동으로 숨김
+        setTimeout(function () {
+            document.getElementById('alertModal').classList.add('hidden');
+        }, 1000);
+    }
+</script>
+<script th:if="${session.isLoggedIn == null}">
+    function sendVote(isPro) {
+        showAlert("경고", "로그인을 먼저 해주세요.");
+    }
+    function sendMsg() {
+        showAlert("경고", "로그인을 먼저 해주세요.");
+    }
+</script>
+<script th:if="${session.isLoggedIn != null}">
+    function sendVote(isPro) {
+        stompClient.send("/pub/msg", {}, JSON.stringify({ 'type': 'VOTE', 'kakaoId': kakaoId, 'roomId': roomId, 'isPro': isPro }));
+    }
+    function sendMsg() {
+        stompClient.send("/pub/msg", {}, JSON.stringify({ 'type': 'MSG', 'kakaoId': kakaoId, 'roomId': roomId, 'msg': msg }));
     }
 </script>
 </html>

@@ -1,4 +1,4 @@
-package com.example.chat.config;
+package com.example.chat.config.stompconfig;
 
 import java.security.Principal;
 

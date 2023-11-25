@@ -1,4 +1,4 @@
-package com.example.chat.controller;
+/*package com.example.chat.controller;
 
 import com.example.chat.Repository.IsProRepository;
 import com.example.chat.dto.VoteMessage;
@@ -64,6 +64,12 @@ public class VoteController {
         messagingTemplate.convertAndSend("/sub/voteMessage/" + message.getRoomId(), message);
     }
 
+
+
+
+
+
+ // 여기서부터는 원래 안씀
     //pub/message에서 메세지 매핑
     /*@MessageMapping("/message/{roomId}")
     @SendTo("/sub/voteMessage/{roomId}")
@@ -88,7 +94,7 @@ public class VoteController {
         return result;
     }*/
 
-}
+//}
 
 /* 계산하는 식 생각해봄 나중에 DB에서 불러옴
 * System.out.println("찬성수 : "+pro_count);

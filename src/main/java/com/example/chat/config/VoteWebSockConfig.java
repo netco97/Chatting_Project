@@ -7,7 +7,7 @@ import org.springframework.web.socket.config.annotation.EnableWebSocketMessageBr
 import org.springframework.web.socket.config.annotation.StompEndpointRegistry;
 import org.springframework.web.socket.config.annotation.WebSocketMessageBrokerConfigurer;
 
-@Configuration
+/*@Configuration
 @EnableWebSocketMessageBroker
 @RequiredArgsConstructor
 public class VoteWebSockConfig implements WebSocketMessageBrokerConfigurer {
@@ -23,4 +23,4 @@ public class VoteWebSockConfig implements WebSocketMessageBrokerConfigurer {
 
         registry.setApplicationDestinationPrefixes("/pub");
     }
-}
+}*/

@@ -1,4 +1,4 @@
-package com.example.chat.controller;
+/*package com.example.chat.controller;
 
 import com.example.chat.Repository.IsProRepository;
 import com.example.chat.dto.ChatDTO;
@@ -36,7 +36,7 @@ public class ChatController {
     /**
      * websocket "/pub/chat/message"로 들어오는 메시징을 처리한다.
      */
-    @MessageMapping("/chat/message")
+    /*@MessageMapping("/chat/message")
     public void message(ChatMessage message, Principal principal) {
         if (ChatMessage.MessageType.ENTER.equals(message.getType()))
         {
@@ -149,3 +149,4 @@ public class ChatController {
         return list;
     }
 }
+*/

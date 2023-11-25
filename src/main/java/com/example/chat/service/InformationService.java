@@ -37,14 +37,13 @@ public class InformationService {
         informationRepository.save(informationEntity);
     }
 
-    public void update(String roomId,String pro,String con,String topic) {
+    public void update(String roomId,String pro,String con) {
         //InformationDTO informationDTO = new InformationDTO(roomId,Integer.parseInt(pro),Integer.parseInt(con),topic);
         InformationDTO informationDTO = InformationDTO.
                 builder()
                 .roomId(roomId)
                 .pro(0)
                 .con(0)
-                .topic(topic)
                 .build();
         InformationEntity informationEntity = InformationEntity.toInformationEntity(informationDTO);
 
@@ -63,7 +62,7 @@ public class InformationService {
     }
 
     //투표 계산 함수
-    public Map<String, Object> select_vote(String roomId){
+    /*public Map<String, Object> select_vote(String roomId){
 
         Map<String, Object> result = new HashMap<String,Object>();
 
@@ -84,7 +83,7 @@ public class InformationService {
         result.put("getConrate",con_rate);
 
         return result;
-    }
+    }*/
 
     public List<ShowInfoDTO> showInfoDTOS() {
         List<InformationEntity> list = informationRepository.findAll();

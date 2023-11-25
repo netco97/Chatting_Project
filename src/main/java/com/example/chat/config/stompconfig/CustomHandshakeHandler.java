@@ -1,5 +1,6 @@
-package com.example.chat.config;
+package com.example.chat.config.stompconfig;
 
+import com.example.chat.config.stompconfig.StompPrincipal;
 import org.springframework.http.server.ServerHttpRequest;
 import org.springframework.web.socket.WebSocketHandler;
 import org.springframework.web.socket.server.support.DefaultHandshakeHandler;
