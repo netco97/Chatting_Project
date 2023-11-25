@@ -21,12 +21,12 @@
         </div>
     </div>
     <div>
-        <a href="/login">로그인</a>
+        <!--<a href="/login">로그인</a>-->
         <!--<img src="/chat/images/20231104/45531780399767.png"> 경로 이런식으로 하면됨. config에서 설정해뒀음.
         /정적경로를 chat/으로해놓아서 chat 없어도 되지않나? -> test해봐야함-->
     </div>
     <div>
-        <form name="logout" action="http://localhost:8080/logout">
+        <form name="logout" action="/logout">
             <input type="submit" value="로그아웃">
         </form>
     </div>
@@ -75,14 +75,14 @@
                     });
             },
             createRoom: function() {
-                if("[[${session.accessToken}]]" !="")
+                /*if("[[${session.accessToken}]]" !="")
                 {
                     this.sender = "[[${session.userId}]]"
                 }
                 if(this.sender === ""){
                     alert("로그인을 해주세요");
                     return;
-                }
+                }*/
                 if("" === this.room_name) {
                     alert("방 제목을 입력해 주십시요.");
                     return;

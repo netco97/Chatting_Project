@@ -1,10 +1,80 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Colosseum</title>
+    <link rel="stylesheet" th:href="@{/css/main.css}"/>
+    <script src="/webjars/jquery/jquery.min.js"></script>
+    <style>
+        body {
+            margin: 0;
+        }
+
+        html,
+        body {
+            height: 100%;
+        }
+    </style>
 </head>
-<body>
-<h1>test</h1>
+
+<body class="bg-white dark: bg-zinc-900">
+<section class="bg-white dark: bg-zinc-900">
+    <div class="container px-6 py-10 mx-auto">
+        <div id="menuToggle" class="cursor-pointer absolute top-0 right-0 m-5">
+            <div class="h-1 w-6 bg-gray-700 my-1"></div>
+            <div class="h-1 w-6 bg-gray-700 my-1"></div>
+            <div class="h-1 w-6 bg-gray-700 my-1"></div>
+        </div>
+
+        <!-- 메뉴 컨테이너 -->
+        <div
+                class="menu-container fixed top-0 right-0 h-full bg-gray-800 w-64 transform translate-x-full transition-transform duration-300">
+            <div class="menu p-8 text-white">
+                <div class="flex justify-end">
+                    <button id="closeMenu" class="p-2 bg-gray-600 hover:bg-gray-700 text-white rounded-full">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
+                             stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2"
+                                  d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                    </button>
+                </div>
+                <!-- 메뉴 아이템들 -->
+                <a href="https://kauth.kakao.com/oauth/authorize?client_id=e174dd79d6f23ded9d7887f7157b726c&redirect_uri=http%3a%2f%2flocalhost%3a8080%2flogin%2fkakao&response_type=code" class="flex items-center text-white hover:text-gray-300">
+                    <img src="https://cdn.imweb.me/upload/S20210304872ba49a108a8/89a68d1e3674a.png" alt="Kakao Logo"
+                         class="w-8 h-8 mr-2" />
+                    <span class="flex-grow">카카오 로그인</span>
+                </a>
+            </div>
+        </div>
+        <h1 class="w-48 h-2 mx-auto bg-gray-200 rounded-lg dark:bg-gray-800"></h1>
+        <div class="grid grid-cols-1 gap-8 mt-8 xl:mt-12 xl:gap-12 sm:grid-cols-2 xl:grid-cols-3 lg:grid-cols-3" id="cardContainer">
+            <!-- card 들어가는 곳-->
+
+        </div>
+    </div>
+</section>
 </body>
+<script src="card.js"></script>
+<script src="load.js"></script>
+<script>
+    console.log(`[[${session.userId}]]`);
+    const menuToggle = document.getElementById("menuToggle");
+    const closeMenu = document.getElementById("closeMenu");
+    const menuContainer = document.querySelector(".menu-container");
+
+    menuToggle.addEventListener("click", () => {
+        menuContainer.classList.remove("translate-x-full");
+    });
+
+    closeMenu.addEventListener("click", () => {
+        menuContainer.classList.add("translate-x-full");
+    });
+
+    getRoomInformations();
+
+</script>
+
 </html>

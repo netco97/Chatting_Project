@@ -51,7 +51,7 @@ public class KaKaoLoginController {
             session.setAttribute("kakaoId",userInfo.get("id"));
         }
 
-        return "redirect:/chat/room";
+        return "redirect:/";
     }
 
     @GetMapping("/logout")
