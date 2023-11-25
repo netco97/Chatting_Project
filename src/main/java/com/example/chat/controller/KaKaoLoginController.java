@@ -3,6 +3,7 @@ package com.example.chat.controller;
 import com.example.chat.dto.KakaoDTO;
 import com.example.chat.service.MemberService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,7 +14,6 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.http.HttpSession;
 import java.util.HashMap;
 
-import static org.springframework.web.bind.annotation.RequestMethod.GET;
 
 @Controller
 @RequiredArgsConstructor
@@ -21,13 +21,13 @@ public class KaKaoLoginController {
 
     private final MemberService memberService;
 
-    @GetMapping("/login")
+    /*@GetMapping("/login")
     public String login() {
         return "/login";
-    }
+    }*/
 
     @GetMapping("/login/kakao")
-    public String kakaoLogin(@RequestParam(value = "code", required = false) String code, HttpSession session) throws Exception {
+    public void kakaoLogin(@RequestParam(value = "code", required = false) String code, HttpSession session) throws Exception {
         System.out.println("#########" + code);
         String access_Token = memberService.getAccessToken(code);
 
@@ -51,7 +51,6 @@ public class KaKaoLoginController {
             session.setAttribute("kakaoId",userInfo.get("id"));
         }
 
-        return "redirect:/chat/room";
     }
 
     @GetMapping("/logout")

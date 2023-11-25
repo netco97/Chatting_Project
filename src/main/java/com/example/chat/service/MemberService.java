@@ -16,6 +16,7 @@ import com.example.chat.dto.KakaoDTO;
 import com.example.chat.entity.User;
 import com.google.gson.JsonObject;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Service;
 
 import com.google.gson.JsonElement;
@@ -43,17 +44,18 @@ public class MemberService {
 
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
 
-            // POST 요청을 위해 기본값이 false인 setDoOutput을 true로
-            conn.setRequestMethod("POST");
-            conn.setDoOutput(true);
+            //필수 헤더 세팅
+            conn.setRequestProperty("Content-type", "application/x-www-form-urlencoded;charset=utf-8");
+            conn.setDoOutput(true); //OutputStream으로 POST 데이터를 넘겨주겠다는 옵션.
 
             // POST 요청에 필요로 요구하는 파라미터 스트림을 통해 전송
             BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(conn.getOutputStream()));
             StringBuilder sb = new StringBuilder();
+
             sb.append("grant_type=authorization_code");
 
-            sb.append("&client_id=e174dd79d6f23ded9d7887f7157b726c"); //본인이 발급받은 key
-            sb.append("&redirect_uri=http%3a%2f%2flocalhost%3a8080%2flogin%2fkakao"); // 본인이 설정한 주소(인코딩함)
+            sb.append("&client_id=").append("e174dd79d6f23ded9d7887f7157b726c"); //본인이 발급받은 key
+            sb.append("&redirect_uri=").append("http://localhost:3000/oauth/kakao"); // 본인이 설정한 주소(인코딩함)
 
             sb.append("&code=" + authorize_code);
             bw.write(sb.toString());
@@ -87,6 +89,7 @@ public class MemberService {
 
             br.close();
             bw.close();
+
         } catch (IOException e) {
             e.printStackTrace();
         }
