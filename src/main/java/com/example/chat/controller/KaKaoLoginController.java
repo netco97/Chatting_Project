@@ -1,5 +1,6 @@
 package com.example.chat.controller;
 
+import com.example.chat.Repository.MemberRepository;
 import com.example.chat.dto.KakaoDTO;
 import com.example.chat.service.MemberService;
 import lombok.RequiredArgsConstructor;
@@ -20,6 +21,7 @@ import static org.springframework.web.bind.annotation.RequestMethod.GET;
 public class KaKaoLoginController {
 
     private final MemberService memberService;
+    private final MemberRepository memberRepository;
 
     @GetMapping("/login")
     public String login() {
@@ -35,8 +37,16 @@ public class KaKaoLoginController {
 
         //로그인 세션 쿠키 만들어짐 -> 30분유지되도록 -> 세션을 이용해서 -> 로그인한 사람의 정보를 가져올 수 있음.
 
-        //DB 저장
-        memberService.save();
+
+        //중복처리로 회원가입
+        if(memberRepository.existsById(Long.parseLong(String.valueOf(userInfo.get("id")))))
+        {
+            System.out.println("이미 있는 회원입니다.");
+        }
+        else{
+            //DB 저장
+            memberService.save();
+        }
 
         System.out.println("###access_Token#### : " + access_Token);
         System.out.println("###nickname#### : " + userInfo.get("nickname"));
@@ -50,6 +60,8 @@ public class KaKaoLoginController {
             session.setAttribute("userId",userInfo.get("nickname"));
             session.setAttribute("accessToken", access_Token);
             session.setAttribute("kakaoId",userInfo.get("id"));
+            System.out.println("admincheck"+ memberRepository.isAdmin_check(String.valueOf(userInfo.get("id"))));
+            session.setAttribute("isAdmin", memberRepository.isAdmin_check(String.valueOf(userInfo.get("id"))));
         }
 
         return "redirect:/";
@@ -63,8 +75,10 @@ public class KaKaoLoginController {
         session.removeAttribute("accessToken");
         session.removeAttribute("userId");
         session.removeAttribute("kakaoId");
+        session.removeAttribute("isLoggedIn");
+        session.removeAttribute("isAdmin");
 
-        return "redirect:/chat/room";
+        return "redirect:/";
     }
 
 }

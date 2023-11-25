@@ -22,8 +22,8 @@ public class IndexController {
     private final ChatService chatService;
     private final InformationService informationService;
 
-    @GetMapping(value = "/getUserInfo")
-    public Map<String, Object>getUserInfo(@RequestParam(name = "kakaoId") String kakaoId){
+    @GetMapping(value = "/getUserInfo/{kakaoId}")
+    public Map<String, Object>getUserInfo(@PathVariable String kakaoId){
         Map<String, Object> result = new HashMap<String,Object>();
 
         result.put("nor", chatRepository.countByKakaoId(kakaoId));

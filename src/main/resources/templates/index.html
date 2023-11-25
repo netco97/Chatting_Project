@@ -42,11 +42,29 @@
                     </button>
                 </div>
                 <!-- 메뉴 아이템들 -->
-                <a href="https://kauth.kakao.com/oauth/authorize?client_id=e174dd79d6f23ded9d7887f7157b726c&redirect_uri=http%3a%2f%2flocalhost%3a8080%2flogin%2fkakao&response_type=code" class="flex items-center text-white hover:text-gray-300">
-                    <img src="https://cdn.imweb.me/upload/S20210304872ba49a108a8/89a68d1e3674a.png" alt="Kakao Logo"
-                         class="w-8 h-8 mr-2" />
-                    <span class="flex-grow">카카오 로그인</span>
-                </a>
+                    <div th:if="${session.isLoggedIn}">
+                        <p><span th:text="${session.userId}"></span></p>
+                        <p>작성 댓글 수 <span id="nor">123</span></p>
+                        <p>투표 수 <span id="nov">123</span></p>
+                        <div th:if="${session.isAdmin}">
+                            <p class="mt-10 mb-4">새 토픽 만들기</p>
+                            <input type="text" placeholder="토픽" class="w-full flex-1 border rounded-full px-4 py-2 focus:outline-none text-black text-sm" id="newTopic"/>
+                            <label>기간</label>
+                            <input name="period" type="number" class="text-black w-10 mt-4" id="newPeriod"/>
+
+                            <button class="bg-gray-700 hover:bg-blue-600 text-white font-semibold py-1 px-2 rounded shadow mt-3 float-right" onclick="adminFunction()">
+                                만들기
+                            </button>
+                        </div>
+                    </div>
+
+                    <div th:if="${session.isLoggedIn == null ? true : false}">
+                        <a href= "https://kauth.kakao.com/oauth/authorize?client_id=e174dd79d6f23ded9d7887f7157b726c&redirect_uri=http%3a%2f%2flocalhost%3a8080%2flogin%2fkakao&response_type=code" class="flex items-center text-white hover:text-gray-300">
+                            <img src="https://cdn.imweb.me/upload/S20210304872ba49a108a8/89a68d1e3674a.png" alt="Kakao Logo"
+                                 class="w-8 h-8 mr-2" />
+                            <span class="flex-grow">카카오 로그인</span>
+                        </a>
+                    </div>
             </div>
         </div>
         <h1 class="w-48 h-2 mx-auto bg-gray-200 rounded-lg dark:bg-gray-800"></h1>
@@ -74,7 +92,16 @@
 
 
     getRoomInformations();
+    getUserInfo([[${session.kakaoId}]]);
 
+</script>
+<script th:if="${session.isAdmin}">
+    // 관리자 사용자만을 위한 JavaScript 함수
+    function adminFunction() {
+        const topic = document.querySelector('#newTopic').value;
+        const period = document.querySelector('#newPeriod').value;
+        createTopic(topic, period);
+    }
 </script>
 
 </html>
