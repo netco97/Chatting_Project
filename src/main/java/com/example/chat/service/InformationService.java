@@ -88,11 +88,10 @@ public class InformationService {
     public List<ShowInfoDTO> showInfoDTOS() {
         List<InformationEntity> list = informationRepository.findAll();
 
-
         // findAll에서 Entity를 DTO로 변환하는 과정
         return list.stream()
                 .map(
-                        l -> new ShowInfoDTO(l.getRoomId(), l.getPro(), l.getCon(), l.getTopic(),l.getCreatedDate())
+                        l -> new ShowInfoDTO(l.getRoomId(), l.getPro(), l.getCon(), l.getTopic(),l.getCreatedDate(),Integer.parseInt(l.getPeriod()))
                 )
                 .collect(Collectors.toList());
     }

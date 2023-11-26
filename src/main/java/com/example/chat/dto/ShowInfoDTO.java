@@ -13,16 +13,17 @@ public class ShowInfoDTO {
     private String topic; //방이름
     private String date; //생성날짜
     private String reply; //채팅방 메세지 수
-    private String period; //기간
+    private int period; //기간
     private boolean isOpened; //방open유무
 
 
     @Builder
-    public ShowInfoDTO(String roomId, int pros, int cons, String topic, String cre_date) {
+    public ShowInfoDTO(String roomId, int pros, int cons, String topic, String cre_date, int period) {
         this.roomId = roomId;
         this.pros = pros;
         this.cons = cons;
         this.topic = topic;
         this.date = cre_date;
+        this.period = period;
     }
 }

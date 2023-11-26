@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 @RequiredArgsConstructor
@@ -40,21 +41,61 @@ public class ChatService {
         return chatRoom;
     }
 
-    public void save(String roomId, String sender, String message, String kakaoId){
+    public void save(String roomId, String message, String kakaoId, String date, String isPro){
         // message (json) to DB(Entity)
         ChatMessage chatMessage = ChatMessage.
                 builder()
                 .roomId(roomId)
-                .sender(sender)
                 .kakaoId(kakaoId)
-                .message(message).build();
+                .message(message)
+                .date(date)
+                .isPro(isPro).
+                build();
 
         ChatEntity chatEntity = ChatEntity.toChatEntity(chatMessage);
         chatRepository.save(chatEntity);
     }
 
+    public List<ChatDTO> proChatLoad(String roomId) {
 
-    public List<ChatDTO> listChat(String roomId) {
+        return chatRepository.findTop30ByRoomIdAndIsProOrderByIdDesc(roomId, "1");
+    }
+
+    public List<ChatDTO> conChatLoad(String roomId) {
+
+        return chatRepository.findTop30ByRoomIdAndIsProOrderByIdDesc(roomId, "0");
+    }
+
+    //이름 변경
+    public String maskName(String name) {
+        if (name == null || name.length() <= 2) {
+            return name;
+        }
+
+        StringBuilder maskedName = new StringBuilder();
+        maskedName.append(name.charAt(0));
+
+        for (int i = 1; i < name.length() - 1; i++) {
+            maskedName.append("●");
+        }
+
+        maskedName.append(name.charAt(name.length() - 1));
+        return maskedName.toString();
+    }
+
+    //현재 시간계산
+    public static String getCurrentDateTime() {
+        // Get the current date and time
+        Date currentDate = new Date();
+
+        // Create a SimpleDateFormat object with the desired format
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+
+        // Format the date and time
+        return dateFormat.format(currentDate);
+    }
+
+    /*public List<ChatDTO> listChat(String roomId) {
         //List<ChatDTO> list = chatRepository.findByRoomIdOrderByIdDesc(roomId);
 
         return chatRepository.findTop10ByRoomIdOrderByIdDesc(roomId);
@@ -63,5 +104,5 @@ public class ChatService {
     public List<ChatDTO> prevChat(String roomId, Long id) {
 
         return chatRepository.findTop10ByRoomIdAndIdLessThanOrderByIdDesc(roomId,id);
-    }
+    }*/
 }

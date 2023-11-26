@@ -4,6 +4,8 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.Date;
+
 @Getter
 @Setter
 public class ChatMessage {
@@ -13,15 +15,17 @@ public class ChatMessage {
     }
     private MessageType type; // 메세지 타입
     private String roomId; // 방번호
-    private String sender; // 메세지 보낸사람
     private String message; // 메세지
     private String kakaoId; // 카카오 ID;
-    private String isProType; // 프론트에서 유저옆 찬/반띄우는용
+    private String date; // date
+
+    private String isPro; //ispro
     @Builder
-    public ChatMessage(String roomId, String sender, String message,String kakaoId){
+    public ChatMessage(String roomId, String message,String kakaoId,String date, String isPro){
         this.roomId = roomId;
-        this.sender = sender;
         this.message = message;
         this.kakaoId = kakaoId;
+        this.date = date;
+        this.isPro = isPro;
     }
 }

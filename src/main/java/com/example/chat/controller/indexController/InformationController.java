@@ -30,7 +30,6 @@ public class InformationController {
         List<ShowInfoDTO> list = informationService.showInfoDTOS();
         for(ShowInfoDTO showInfoDTO : list) {
             showInfoDTO.setReply(String.valueOf(chatRepository.countByRoomId(showInfoDTO.getRoomId())));
-            //showInfoDTO.setPeriod(String.valueOf(rd.nextInt(15)+7));
             showInfoDTO.setOpened(true);
             System.out.println(showInfoDTO);
         }

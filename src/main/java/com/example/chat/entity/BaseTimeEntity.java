@@ -27,7 +27,6 @@ public abstract class BaseTimeEntity {
         this.createdDate = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
     }
 
-
     // 포맷이 원하는 형식으로 안나옴
     //private String createdDate = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
 }

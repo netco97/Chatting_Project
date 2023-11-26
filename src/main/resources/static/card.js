@@ -34,10 +34,10 @@ function createCard(data) {
                 </div>
               </div>
               <h1 class="w-56 h-6 mt-4 bg-gray-200 rounded-lg dark:bg-zinc-800 dark:text-white">
-                <span class="ml-3 font-bold">${data.date} - ${data.date}</span>
+                <span class="ml-3 font-bold">${data.date} - ${addDays(data.date, data.period)}</span>
               </h1>
               <p class="w-24 h-6 mt-4 bg-gray-200 rounded-lg dark:bg-zinc-800 text-center">
-                <span class="font-bold text-sm dark:text-white">D - ${data.period}</span>
+                <span class="font-bold text-sm dark:text-white">${getDday(addDays(data.date, data.period))}</span>
               </p>
             </div>
               `;
@@ -88,5 +88,35 @@ function getRoomInformations(){
         } else {
             console.log("fail ! !");
         }
+    }
+}
+
+function addDays(date, period) {
+    var newDate = new Date(date);
+    newDate.setDate(newDate.getDate() + period);
+    console.log(newDate.getFullYear());
+    return newDate.getFullYear() + '/' + (newDate.getMonth() + 1).toString().padStart(2, '0') + '/' + newDate.getDate().toString().padStart(2, '0');
+}
+
+function getDday(date) {
+    // 목표 날짜를 Date 객체로 변환
+    var targetDate = new Date(date);
+    targetDate.setHours(0, 0, 0, 0); // 시간, 분, 초, 밀리초를 0으로 설정
+
+    // 현재 날짜
+    var today = new Date();
+    today.setHours(0, 0, 0, 0); // 시간, 분, 초, 밀리초를 0으로 설정
+
+    // 디데이 계산
+    var diff = targetDate - today;
+    var dDay = diff / (1000 * 60 * 60 * 24);
+
+    // 디데이 문자열 포맷팅
+    if (dDay > 0) {
+        return "D-" + Math.floor(dDay); // 디데이까지 남은 일수
+    } else if (dDay < 0) {
+        return "D+" + Math.abs(Math.ceil(dDay)); // 디데이가 지난 일수
+    } else {
+        return "D-Day"; // 오늘일 경우
     }
 }

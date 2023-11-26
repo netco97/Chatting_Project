@@ -17,15 +17,15 @@ public class ChatDTO {
 
     private String kakaoId; // kakaoId;
 
-    private String isProType;
+    private String date; // date
 
 
     @Builder
-    public ChatDTO(Long id, String roomId, String sender, String message, String kakaoId){
+    public ChatDTO(Long id, String roomId, String message, String kakaoId, String date){
         this.id = id;
         this.roomId = roomId;
-        this.sender = sender;
         this.message = message;
         this.kakaoId = kakaoId;
+        this.date = date;
     }
 }
