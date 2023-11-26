@@ -20,6 +20,9 @@
         body {
             height: 100%;
         }
+        .-translate-x-double {
+            transform: translateX(-200%);
+        }
     </style>
 </head>
 <body class="bg-zinc-900">
@@ -48,7 +51,7 @@
     </div>
 </div>
 <div class="w-11/12 h-5/6 rounded-3xl p-10 flex flex-col justify-center fixed bg-zinc-900 left-1/2 -translate-x-1/2 top-1/2 -translate-y-1/2">
-
+    <div class="flex flex-col justify-center fixed bg-zinc-900 left-1/2 -translate-x-1/2 top-1/2 -translate-y-1/2 h-1/2 w-3/4">
     <div class="text-4xl font-bold mb-10 flex justify-center text-white" th:text="${topic}">
     </div>
     <div class="w-full flex justify-center mb-10">
@@ -61,9 +64,10 @@
         <div class="conPercentage mx-3 font-bold w-14 text-center text-white" th:text="${view_con_rate}"></div>
         <div class="con bg-gray-700 text-white border-solid border-gray-500 border-2 h-5 w-12 table-cell text-center text-sm rounded-3xl hover:cursor-pointer" onclick="sendVote(0)">반대</div>
     </div>
-    <div class="flex h-full">
+    <div class="flex h-full w-[200%] sm:w-full">
         <!--section A-->
-        <div class="h-full flex-1 overflow-y-auto p-4 border-4 border-solid border-gray-500 rounded-xl">
+        <div class="h-full flex-1 overflow-y-auto p-4 border-4 border-solid border-gray-500 rounded-xl section transition-transform duration-500 ease-in-out w-full"
+             id="sectionA">
             <div class="flex flex-col space-y-2 msgProContainer">
                 <!--찬성표-->
             </div>
@@ -72,18 +76,36 @@
 
         </div>
         <!--section B-->
-        <div class="h-full flex-1 overflow-y-auto p-4 border-4 border-solid border-gray-500 rounded-xl hidden sm:block">
+        <!-- hidden sm:block -->
+        <div class="h-full flex-1 overflow-y-auto p-4 border-4 border-solid border-gray-500 rounded-xl section transition-transform duration-500 ease-in-out transform translate-x-full"
+             id="sectionB">
             <div class="flex flex-col space-y-2 msgConContainer">
                 <!--반대표-->
             </div>
         </div>
     </div>
     <div class=" p-4 flex items-center">
-        <input type="text" placeholder="여러분의 의견을 말해주세요" class="flex-1 border rounded-full px-4 py-2 focus:outline-none msgInput" />
-        <button class="bg-gray-700 text-white rounded-full p-2 ml-2 hover:bg-blue-600 focus:outline-none" onclick="sendMsg()">
-            <svg width="20px" height="20px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" stroke="#ffffff"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M11.5003 12H5.41872M5.24634 12.7972L4.24158 15.7986C3.69128 17.4424 3.41613 18.2643 3.61359 18.7704C3.78506 19.21 4.15335 19.5432 4.6078 19.6701C5.13111 19.8161 5.92151 19.4604 7.50231 18.7491L17.6367 14.1886C19.1797 13.4942 19.9512 13.1471 20.1896 12.6648C20.3968 12.2458 20.3968 11.7541 20.1896 11.3351C19.9512 10.8529 19.1797 10.5057 17.6367 9.81135L7.48483 5.24303C5.90879 4.53382 5.12078 4.17921 4.59799 4.32468C4.14397 4.45101 3.77572 4.78336 3.60365 5.22209C3.40551 5.72728 3.67772 6.54741 4.22215 8.18767L5.24829 11.2793C5.34179 11.561 5.38855 11.7019 5.407 11.8459C5.42338 11.9738 5.42321 12.1032 5.40651 12.231C5.38768 12.375 5.34057 12.5157 5.24634 12.7972Z" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>
+        <input type="text" placeholder="여러분의 의견을 말해주세요"
+               class="msgInput flex-1 border rounded-full px-4 py-2 focus:outline-none" />
+        <button class="bg-gray-700 text-white rounded-full p-2 ml-2 hover:bg-blue-600 focus:outline-none"
+                onclick="sendMsg()">
+            <svg width="20px" height="20px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"
+                 stroke="#ffffff">
+                <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                <g id="SVGRepo_iconCarrier">
+                    <path
+                            d="M11.5003 12H5.41872M5.24634 12.7972L4.24158 15.7986C3.69128 17.4424 3.41613 18.2643 3.61359 18.7704C3.78506 19.21 4.15335 19.5432 4.6078 19.6701C5.13111 19.8161 5.92151 19.4604 7.50231 18.7491L17.6367 14.1886C19.1797 13.4942 19.9512 13.1471 20.1896 12.6648C20.3968 12.2458 20.3968 11.7541 20.1896 11.3351C19.9512 10.8529 19.1797 10.5057 17.6367 9.81135L7.48483 5.24303C5.90879 4.53382 5.12078 4.17921 4.59799 4.32468C4.14397 4.45101 3.77572 4.78336 3.60365 5.22209C3.40551 5.72728 3.67772 6.54741 4.22215 8.18767L5.24829 11.2793C5.34179 11.561 5.38855 11.7019 5.407 11.8459C5.42338 11.9738 5.42321 12.1032 5.40651 12.231C5.38768 12.375 5.34057 12.5157 5.24634 12.7972Z"
+                            stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+                </g>
+            </svg>
         </button>
     </div>
+
+    <div class="flex justify-center">
+        <span class="text-gray-400">세로로 긴 화면에서는 화면을 좌우로 스와이프 해주세요!</span>
+    </div>
+</div>
 </div>
 </body>
 
@@ -91,16 +113,46 @@
 <script src="/webjars/sockjs-client/1.5.1/sockjs.min.js"></script>
 <script src="/webjars/stomp-websocket/2.3.4/stomp.min.js"></script>
 <script>
-
-    const msgProContainer = document.querySelector('.msgProContainer');
-    const msgConContainer = document.querySelector('.msgConContainer');
-
     function goBack() {
         window.history.back();
     }
+    let smBreakPointFlag = false;
+    const msgProContainer = document.querySelector('.msgProContainer');
+    const msgConContainer = document.querySelector('.msgConContainer');
+    const breakpoint = window.matchMedia("(min-width: 640px)");
 
-    msgInitXhr();
+    // 이벤트 리스너를 사용하여 브레이크포인트의 변경을 감지합니다.
+    breakpoint.addListener((e) => {
+        if (e.matches) {
+            // 화면 너비가 640px 이상일 때 실행할 코드
+            console.log("화면이 640px 이상입니다.");
+            smBreakPointFlag = false;
+            sectionA.classList.remove("section", "transition-transform", "duration-500", "ease-in-out", "-translate-x-double");
+            sectionB.classList.remove("section", "transition-transform", "duration-500", "ease-in-out", "transform", "translate-x-full");
 
+        } else {
+            // 화면 너비가 640px 미만일 때 실행할 코드
+            console.log("화면이 640px 미만입니다.");
+            smBreakPointFlag = true;
+            sectionA.classList.add("section", "transition-transform", "duration-500", "ease-in-out");
+            sectionB.classList.add("section", "transition-transform", "duration-500", "ease-in-out", "transform", "translate-x-full");
+        }
+    });
+
+    // 초기 로드시에도 조건을 확인합니다.
+    if (breakpoint.matches) {
+        // 화면 너비가 640px 이상일 때 실행할 초기화 코드
+        console.log("초기 로드에서 화면 너비가 640px 이상입니다.");
+        smBreakPointFlag = false;
+        sectionA.classList.remove("section", "transition-transform", "duration-500", "ease-in-out", "-translate-x-double");
+        sectionB.classList.remove("section", "transition-transform", "duration-500", "ease-in-out", "transform", "translate-x-full");
+    } else {
+        // 화면 너비가 640px 미만일 때 실행할 초기화 코드
+        console.log("초기 로드에서 화면 너비가 640px 미만입니다.");
+        smBreakPointFlag = true;
+        sectionA.classList.add("section", "transition-transform", "duration-500", "ease-in-out");
+        sectionB.classList.add("section", "transition-transform", "duration-500", "ease-in-out", "transform", "translate-x-full");
+    }
     var socket = new SockJS('/ws');
     var stompClient = Stomp.over(socket);
 
@@ -116,22 +168,23 @@
                     const conGage = document.querySelector('.conGage');
                     const proPercentage = document.querySelector('.proPercentage');
                     const conPercentage = document.querySelector('.conPercentage');
-                    const proPercent = response.proTotal == 0 ? 0+'%' : (response.proTotal / (response.proTotal + response.conTotal) * 100).toFixed(2);
-                    const conPercent = response.conTotal == 0 ? 0+'%' : (response.conTotal / (response.proTotal + response.conTotal) * 100).toFixed(2);
+                    const proPercent = response.proTotal == 0 ? 0 + '%' : (response.proTotal / (response.proTotal + response.conTotal) * 100).toFixed(2);
+                    const conPercent = response.conTotal == 0 ? 0 + '%' : (response.conTotal / (response.proTotal + response.conTotal) * 100).toFixed(2);
                     proGage.style.width = (proPercent + '%');
                     conGage.style.width = (conPercent + '%');
-                    if(proPercent == 100){
+                    if (proPercent == 100) {
                         proGage.classList.add("rounded-r-lg");
-                    }else{
+                    } else {
                         proGage.classList.remove("rounded-r-lg");
                     }
-                    if(conPercent == 100){
+                    if (conPercent == 100) {
                         conGage.classList.add("rounded-l-lg");
-                    }else{
+                    } else {
                         conGage.classList.remove("rounded-l-lg");
                     }
                     proPercentage.innerText = response.proTotal;
                     conPercentage.innerText = response.conTotal;
+
                 }
                 else if (response.isSuccess == 'fail') {
                     showAlert("경고", response.error);
@@ -139,11 +192,6 @@
 
             } else if (response.type == 'MSG') {
                 console.log('MSG!!!!');
-                console.log("roomId"+response.roomId);
-                console.log("kakaoID"+response.kakaoId);
-                console.log("isPro"+response.isPro);
-                console.log("date"+response.date);
-                console.log("sendor"+response.sendor);
                 setMsg(response);
             }
         });
@@ -151,10 +199,8 @@
             let response = JSON.parse(message.body);
             showAlert("경고", response.error);
         });
+
     });
-
-
-
     function showAlert(title, message) {
         document.getElementById('alertModalTitle').innerText = title;
         document.getElementById('alertModalBody').innerText = message;
@@ -166,6 +212,8 @@
             document.getElementById('alertModal').classList.add('hidden');
         }, 1000);
     }
+        msgInitXhr();
+
 </script>
 <script th:if="${session.isLoggedIn == null}">
     function sendVote(isPro) {
@@ -181,7 +229,68 @@
     }
     function sendMsg() {
         msg = document.querySelector('.msgInput').value;
+        document.querySelector('.msgInput').value = '';
         stompClient.send("/pub/msg", {}, JSON.stringify({ 'type': 'MSG', 'kakaoId': kakaoId, 'roomId': roomId, 'msg': msg }));
     }
 </script>
+<script>
+
+    let startX;
+    let isDragging = false;
+
+    const sectionA = document.getElementById('sectionA');
+    const sectionB = document.getElementById('sectionB');
+
+    function handleStart(x) {
+        startX = x;
+        isDragging = true;
+    }
+
+    function handleMove(x) {
+        if (!isDragging) return;
+
+        const diffX = x - startX;
+        if (diffX < -50 && smBreakPointFlag) { // 오른쪽으로 스와이프/드래그
+            sectionA.classList.add('-translate-x-double');
+            sectionB.classList.remove('translate-x-full');
+            sectionB.classList.add('-translate-x-full');
+            isDragging = false;
+        } else if (diffX > 50 && smBreakPointFlag) { // 왼쪽으로 스와이프/드래그
+            sectionB.classList.add('translate-x-full');
+            sectionB.classList.remove('-translate-x-full');
+            sectionA.classList.remove('-translate-x-double');
+            isDragging = false;
+        }
+    }
+
+    // 터치 이벤트 핸들러
+    function handleTouchStart(e) {
+        handleStart(e.touches[0].clientX);
+    }
+
+    function handleTouchMove(e) {
+        handleMove(e.touches[0].clientX);
+    }
+
+    // 마우스 이벤트 핸들러
+    function handleMouseDown(e) {
+        handleStart(e.clientX);
+    }
+
+    function handleMouseMove(e) {
+        handleMove(e.clientX);
+    }
+
+    function handleMouseUp() {
+        isDragging = false;
+    }
+
+    document.addEventListener('touchstart', handleTouchStart);
+    document.addEventListener('touchmove', handleTouchMove);
+    document.addEventListener('mousedown', handleMouseDown);
+    document.addEventListener('mousemove', handleMouseMove);
+    document.addEventListener('mouseup', handleMouseUp);
+</script>
+
+
 </html>

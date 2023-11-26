@@ -30,6 +30,6 @@ public class MessageDTO {
 
     // ----------------------------------- CHAT -------------------------------
     private String msg;
-    private String sendor;
+    private String sender;
     private String date;
 }

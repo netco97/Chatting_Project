@@ -24,7 +24,7 @@ public class ChatEntity {
     private String roomId;
 
     @Column(nullable = false)
-    private String message;
+    private String msg;
 
     @Column(nullable = false)
     private String kakaoId;
@@ -35,13 +35,18 @@ public class ChatEntity {
     @Column(nullable = false)
     private String isPro;
 
+    @Column(nullable = false)
+    private String sender;
+
     public static ChatEntity toChatEntity(ChatMessage chatMessage) {
         ChatEntity chatEntity = new ChatEntity();
         chatEntity.roomId = chatMessage.getRoomId();
-        chatEntity.message = chatMessage.getMessage();
+        chatEntity.msg = chatMessage.getMsg();
         chatEntity.kakaoId = chatMessage.getKakaoId();
         chatEntity.date = chatMessage.getDate();
         chatEntity.isPro = chatMessage.getIsPro();
+        chatEntity.sender = chatMessage.getSender();
+
         return chatEntity;
     }
 }

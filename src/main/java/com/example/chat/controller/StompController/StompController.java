@@ -69,6 +69,7 @@ public class StompController {
             System.out.println(messageDTO.getKakaoId());
             System.out.println(messageDTO.getRoomId());
             System.out.println(messageDTO.getMsg());
+            System.out.println(principal);
             //유저가 투표를 했으면
             if(isProRepository.isPro_count_check(messageDTO.getKakaoId(),messageDTO.getRoomId())==1)
             {
@@ -83,13 +84,15 @@ public class StompController {
                     messageDTO.setIsPro(isPro);
                 }
                 String currentTime = chatService.getCurrentDateTime();
-
-                chatService.save(messageDTO.getRoomId(),messageDTO.getMsg(),messageDTO.getKakaoId(), currentTime, isPro);
-                messageDTO.setDate(currentTime);
                 String name = memberRepository.k_name_select(messageDTO.getKakaoId());
-                messageDTO.setSendor(chatService.maskName(name));
+                String userName = chatService.maskName(name);
 
-                System.out.println(chatService.maskName(name));
+                chatService.save(messageDTO.getRoomId(),messageDTO.getMsg(),messageDTO.getKakaoId(), currentTime, isPro, userName);
+                messageDTO.setDate(currentTime);
+                messageDTO.setSender(userName);
+                /*String name = memberRepository.k_name_select(messageDTO.getKakaoId());
+                messageDTO.setSender(chatService.maskName(name));*/
+
                 messagingTemplate.convertAndSend("/sub/topic/" + messageDTO.getRoomId(), messageDTO);
             }
 

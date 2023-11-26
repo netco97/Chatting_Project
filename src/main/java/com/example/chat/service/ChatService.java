@@ -1,11 +1,10 @@
 package com.example.chat.service;
 
 import com.example.chat.Repository.ChatRepository;
-import com.example.chat.dto.ChatDTO;
-import com.example.chat.dto.ChatMessage;
-import com.example.chat.dto.ChatRoom;
+import com.example.chat.dto.*;
 import com.example.chat.entity.ChatEntity;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
@@ -41,15 +40,16 @@ public class ChatService {
         return chatRoom;
     }
 
-    public void save(String roomId, String message, String kakaoId, String date, String isPro){
+    public void save(String roomId, String msg, String kakaoId, String date, String isPro, String sender){
         // message (json) to DB(Entity)
         ChatMessage chatMessage = ChatMessage.
                 builder()
                 .roomId(roomId)
                 .kakaoId(kakaoId)
-                .message(message)
+                .msg(msg)
                 .date(date)
-                .isPro(isPro).
+                .isPro(isPro)
+                        .sender(sender).
                 build();
 
         ChatEntity chatEntity = ChatEntity.toChatEntity(chatMessage);
@@ -64,6 +64,11 @@ public class ChatService {
     public List<ChatDTO> conChatLoad(String roomId) {
 
         return chatRepository.findTop30ByRoomIdAndIsProOrderByIdDesc(roomId, "0");
+    }
+
+    public List<ChatDTO2> proPrevLoad(String roomId,String isPro, int count){
+        //return chatRepository.findByIsProAndRoomId("1",roomId, pageable);
+        return chatRepository.findDataWithLimitAndOffset(isPro,roomId, 30, count);
     }
 
     //이름 변경
@@ -89,7 +94,7 @@ public class ChatService {
         Date currentDate = new Date();
 
         // Create a SimpleDateFormat object with the desired format
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
         // Format the date and time
         return dateFormat.format(currentDate);
