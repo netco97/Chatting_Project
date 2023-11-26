@@ -19,7 +19,7 @@ function createMyMSG(data) {
         <div class="flex justify-end">
             <div class="bg-blue-200 text-black p-2 rounded-lg max-w-xs">
                 <div class="text-sm align-text-bottom text-right">
-                    ${data.sender}
+                    나
                 </div>
                     ${data.msg}
                 <div class="text-sm w-full align-text-bottom text-right">
@@ -33,10 +33,40 @@ function createMyMSG(data) {
 function setMsg(data) {
     const msg = data.kakaoId == kakaoId ? createMyMSG(data) : createOtherMSG(data);
     if(data.isPro == 1){
+        const flag = checkProScroll();
         msgProContainer.innerHTML += msg;
+        if(flag || data.kakaoId == kakaoId){
+            proScrollDown();
+        }
+        proCount+=1;
     }
     else{
+        const flag = checkConScroll();
         msgConContainer.innerHTML += msg;
+        if(flag || data.kakaoId == kakaoId){
+            conScrollDown();
+        }
+        conCount+=1;
+    }
+}
+
+function prependMsg(data){
+    const msg = data.kakaoId == kakaoId ? createMyMSG(data) : createOtherMSG(data);
+    if(data.isPro == 1){
+        const flag = checkProScroll();
+        msgProContainer.innerHTML = msg + msgProContainer.innerHTML;
+        if(flag){
+            proScrollDown();
+        }
+        proCount+=1;
+    }
+    else{
+        const flag = checkConScroll();
+        msgConContainer.innerHTML = msg + msgConContainer.innerHTML;
+        if(flag){
+            conScrollDown();
+        }
+        conCount+=1;
     }
 }
 
@@ -69,10 +99,31 @@ function msgScrollXhr(isPro, count){
             console.log(data);
             console.log(data[0]);
             for (item in data) {
-                setMsg(data[item]);
+                prependMsg(data[item]);
             }
         } else {
             console.log("fail ! !");
         }
     }
+}
+
+function proScrollDown(){
+
+    sectionA.scrollTop = sectionA.scrollHeight;
+}
+
+function checkProScroll() {
+    const isAtBottom = sectionA.scrollHeight - sectionA.clientHeight <= sectionA.scrollTop + 1;
+
+    return isAtBottom;
+}
+
+function conScrollDown(){
+    sectionB.scrollTop = sectionB.scrollHeight;;
+}
+
+function checkConScroll() {
+    const isAtBottom = sectionB.scrollHeight - sectionB.clientHeight <= sectionB.scrollTop + 1;
+
+    return isAtBottom;
 }

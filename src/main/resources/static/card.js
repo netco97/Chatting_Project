@@ -25,9 +25,9 @@ function createCard(data) {
             </div>
             <div class="flex flex-col items-center justify-center">
               <p class="text-2xl font-bold text-navy-700 text-black dark:text-white whitespace-nowrap">
-                1위
+                ${(data.pros + data.cons)}
               </p>
-                        <p class="text-sm font-normal text-gray-600 dark:text-white whitespace-nowrap">인기</p>
+                        <p class="text-sm font-normal text-gray-600 dark:text-white whitespace-nowrap">투표수</p>
                       </div>
                     </div>
                   </div>

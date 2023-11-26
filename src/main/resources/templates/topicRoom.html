@@ -42,32 +42,41 @@
         </div>
     </div>
 </div>
-
 <div class="left-10 justify-start absolute top-10 z-50">
     <div class="flex items-center justify-start rounded">
-        <button class="bg-gray-700 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded shadow" onclick="goBack()">
+        <button class="bg-gray-700 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded shadow"
+                onclick="goBack()">
             뒤로 가기
         </button>
     </div>
 </div>
-<div class="w-11/12 h-5/6 rounded-3xl p-10 flex flex-col justify-center fixed bg-zinc-900 left-1/2 -translate-x-1/2 top-1/2 -translate-y-1/2">
-    <div class="flex flex-col justify-center fixed bg-zinc-900 left-1/2 -translate-x-1/2 top-1/2 -translate-y-1/2 h-1/2 w-3/4">
-    <div class="text-4xl font-bold mb-10 flex justify-center text-white" th:text="${topic}">
+<div class="w-11/12 h-5/6 rounded-3xl p-10 ">
+    <div
+            class="h-1/2 w-3/4 flex flex-col justify-center fixed bg-zinc-900 left-1/2 -translate-x-1/2 top-1/2 -translate-y-1/2">
+        <div class="text-4xl font-bold mb-10 flex justify-center text-white" th:text="${topic}">
     </div>
     <div class="w-full flex justify-center mb-10">
-        <div class="pro bg-gray-700 text-white border-solid border-gray-500 border-2 h-5 w-12 table-cell text-center text-sm rounded-3xl hover:cursor-pointer" onclick="sendVote(1)" >찬성</div>
+        <div class="pro bg-gray-700 text-white border-solid border-gray-500 border-2 h-5 w-12 table-cell text-center text-sm rounded-3xl hover:cursor-pointer"
+             onclick="sendVote(1)">
+            찬성</div>
         <div class="proPercentage mx-3 font-bold w-14 text-center text-white" th:text="${view_pro_rate}"></div>
         <div class="w-1/2 h-5 rounded-lg bg-gray-300 flex">
-            <div class="proGage h-full bg-yellow-300 rounded-l-lg w-1/4 text-center" th:style="'width:'+${view_pro_rate}+'%'" th:classappend="${view_pro_rate == '100.0'}? 'rounded-r-lg' : ''"></div>
-            <div class="conGage h-full bg-blue-400 rounded-r-lg w-3/4 text-center" th:style="'width:'+${view_con_rate}+'%'" th:classappend="${view_con_rate == '100.0'}? 'rounded-l-lg' : ''"></div>
+            <div class="proGage h-full bg-yellow-300 rounded-l-lg w-1/4 text-center"
+                 th:style="'width:'+${view_pro_rate}+'%'"
+                 th:classappend="${view_pro_rate == '100.0'}? 'rounded-r-lg' : ''"></div>
+            <div class="conGage h-full bg-blue-400 rounded-r-lg w-3/4 text-center"
+                 th:style="'width:'+${view_con_rate}+'%'"
+                 th:classappend="${view_con_rate == '100.0'}? 'rounded-l-lg' : ''"></div>
         </div>
         <div class="conPercentage mx-3 font-bold w-14 text-center text-white" th:text="${view_con_rate}"></div>
-        <div class="con bg-gray-700 text-white border-solid border-gray-500 border-2 h-5 w-12 table-cell text-center text-sm rounded-3xl hover:cursor-pointer" onclick="sendVote(0)">반대</div>
+        <div class="con bg-gray-700 grow-0 text-white border-solid border-gray-500 border-2 h-5 w-12 table-cell text-center text-sm rounded-3xl hover:cursor-pointer"
+             onclick="sendVote(0)">
+            반대</div>
     </div>
     <div class="flex h-full w-[200%] sm:w-full">
         <!--section A-->
-        <div class="h-full flex-1 overflow-y-auto p-4 border-4 border-solid border-gray-500 rounded-xl section transition-transform duration-500 ease-in-out w-full"
-             id="sectionA">
+        <div class="h-full flex-1 overflow-y-auto  p-4 border-4 border-solid border-gray-500 rounded-xl section transition-transform duration-500 ease-in-out w-full"
+             id="sectionA" style="height: 45vh;">
             <div class="flex flex-col space-y-2 msgProContainer">
                 <!--찬성표-->
             </div>
@@ -78,7 +87,7 @@
         <!--section B-->
         <!-- hidden sm:block -->
         <div class="h-full flex-1 overflow-y-auto p-4 border-4 border-solid border-gray-500 rounded-xl section transition-transform duration-500 ease-in-out transform translate-x-full"
-             id="sectionB">
+             id="sectionB" style="height: 45vh;">
             <div class="flex flex-col space-y-2 msgConContainer">
                 <!--반대표-->
             </div>
@@ -101,18 +110,47 @@
             </svg>
         </button>
     </div>
-
     <div class="flex justify-center">
-        <span class="text-gray-400">세로로 긴 화면에서는 화면을 좌우로 스와이프 해주세요!</span>
+        <span class="text-gray-400 text-sm">모바일에서는 화면을 좌우로 스와이프 해주세요!</span>
     </div>
 </div>
 </div>
+
 </body>
 
 <script src="message.js"></script>
 <script src="/webjars/sockjs-client/1.5.1/sockjs.min.js"></script>
 <script src="/webjars/stomp-websocket/2.3.4/stomp.min.js"></script>
 <script>
+    let proCount = 0;
+    let conCount = 0;
+    let lastExecuted = 0;
+
+    sectionA.addEventListener('scroll', function () {
+        if (sectionA.scrollTop === 0) {
+            msgScrollXhr(1, proCount);
+        }
+    });
+    sectionB.addEventListener('scroll', function () {
+        if (sectionB.scrollTop === 0) {
+            msgScrollXhr(0, conCount);
+        }
+    });
+
+    document.querySelector('.msgInput').addEventListener('keyup', function (event) {
+        if (event.key === 'Enter') {
+            const now = Date.now();
+
+            if (now - lastExecuted > 500) {
+                if (event.key === 'Enter') {
+                    sendMsg();
+                    lastExecuted = now;
+                }
+            }
+
+        }
+    });
+
     function goBack() {
         window.history.back();
     }
@@ -213,7 +251,6 @@
         }, 1000);
     }
         msgInitXhr();
-
 </script>
 <script th:if="${session.isLoggedIn == null}">
     function sendVote(isPro) {
