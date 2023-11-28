@@ -1,7 +1,7 @@
-function createCard(data) {
+function createCard(data, deadline, dday) {
     console.log(data);
     return `
-    <div class="w-full card" topic-id="${data.roomId}" onclick="window.location.href='topicRoom?roomId='+'${data.roomId}'">
+    <div class="w-full card ${dday[1] == '+' ? 'blur-sm ' : ' '}" topic-id="${data.roomId}" onclick="window.location.href='topicRoom?roomId='+'${data.roomId}'">
 
     <div class="w-full h-64 bg-gray-300 rounded-lg dark:bg-gray-600 flex items-center">
       <div class="w-full h-64 bg-white dark:bg-zinc-800 h-52 rounded-lg">
@@ -19,7 +19,7 @@ function createCard(data) {
             </div>
             <div class="flex flex-col items-center justify-center">
               <p class="text-2xl font-bold text-navy-700 text-black dark:text-white whitespace-nowrap">
-                ${(data.pros / (data.pros + data.cons) * 100).toFixed(2)}%
+                ${data.pros == 0 ? '0' : (data.pros / (data.pros + data.cons) * 100).toFixed(2)}%
               </p>
               <p class="text-sm font-normal text-gray-600 dark:text-white whitespace-nowrap">찬성</p>
             </div>
@@ -34,10 +34,10 @@ function createCard(data) {
                 </div>
               </div>
               <h1 class="w-56 h-6 mt-4 bg-gray-200 rounded-lg dark:bg-zinc-800 dark:text-white">
-                <span class="ml-3 font-bold">${data.date} - ${addDays(data.date, data.period)}</span>
+                <span class="ml-3 font-bold">${data.date} - ${deadline}</span>
               </h1>
               <p class="w-24 h-6 mt-4 bg-gray-200 rounded-lg dark:bg-zinc-800 text-center">
-                <span class="font-bold text-sm dark:text-white">${getDday(addDays(data.date, data.period))}</span>
+                <span class="font-bold text-sm dark:text-white">${dday}</span>
               </p>
             </div>
               `;
@@ -71,7 +71,7 @@ function createCard(data) {
           */
 function setCards(data){
    for(item in data){
-      const card = createCard(data[item]);
+      const card = createCard(data[item], addDays(data[item].date, data[item].period), getDday(addDays(data[item].date, data[item].period)));
       cardContainer.innerHTML += card;
    }
 }
@@ -95,7 +95,7 @@ function addDays(date, period) {
     var newDate = new Date(date);
     newDate.setDate(newDate.getDate() + period);
     console.log(newDate.getFullYear());
-    return newDate.getFullYear() + '/' + (newDate.getMonth() + 1).toString().padStart(2, '0') + '/' + newDate.getDate().toString().padStart(2, '0');
+    return newDate.getFullYear() + '-' + (newDate.getMonth() + 1).toString().padStart(2, '0') + '-' + newDate.getDate().toString().padStart(2, '0');
 }
 
 function getDday(date) {

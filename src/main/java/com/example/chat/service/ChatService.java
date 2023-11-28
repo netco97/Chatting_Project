@@ -73,18 +73,25 @@ public class ChatService {
 
     //이름 변경
     public String maskName(String name) {
-        if (name == null || name.length() <= 2) {
+        if (name == null || name.length() <= 1) {
             return name;
         }
 
         StringBuilder maskedName = new StringBuilder();
-        maskedName.append(name.charAt(0));
 
-        for (int i = 1; i < name.length() - 1; i++) {
+        if (name.length() == 2) {
+            // 이름이 2글자인 경우, 첫 번째 글자를 제외한 나머지를 ●로 바꿈
+            maskedName.append(name.charAt(0));
             maskedName.append("●");
+        } else {
+            // 이름이 3글자 이상인 경우, 첫 번째와 마지막 글자를 제외하고 나머지를 ●로 바꿈
+            maskedName.append(name.charAt(0));
+            for (int i = 1; i < name.length() - 1; i++) {
+                maskedName.append("●");
+            }
+            maskedName.append(name.charAt(name.length() - 1));
         }
 
-        maskedName.append(name.charAt(name.length() - 1));
         return maskedName.toString();
     }
 
