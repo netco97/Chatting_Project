@@ -35,9 +35,6 @@ dependencies {
 	runtimeOnly 'com.mysql:mysql-connector-j'
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 
-	//embedded-redis
-	implementation group: 'it.ozimov', name: 'embedded-redis', version: '0.7.2'
-
 	//websocket
 	implementation 'org.springframework.boot:spring-boot-starter-websocket'
 	implementation 'org.webjars:sockjs-client:1.5.1'

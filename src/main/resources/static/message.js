@@ -100,6 +100,7 @@ function msgScrollXhr(isPro, count){
             //console.log(data[0]);
             for (item in data) {
                 prependMsg(data[item]);
+                // DTO --> aDTO // name ,age a.namfunction(res) res.name
             }
         } else {
             //console.log("fail ! !");

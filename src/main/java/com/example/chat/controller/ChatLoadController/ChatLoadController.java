@@ -29,24 +29,17 @@ public class ChatLoadController {
         for(ChatDTO chatDTO : pro_list)
         {
             chatDTO.setIsPro(1);
-            System.out.println(chatDTO);
+            //System.out.println(chatDTO);
         }
         System.out.println("------반대 dto--------");
         for(ChatDTO chatDTO : con_list)
         {
             chatDTO.setIsPro(0);
-            System.out.println(chatDTO);
+            //System.out.println(chatDTO);
         }
 
         System.out.println("-------합 dto--------");
         List<ChatDTO> joined = Stream.concat(pro_list.stream(), con_list.stream()).collect(Collectors.toList());
-
-        for(ChatDTO chatDTO : joined)
-        {
-            /*String name = memberRepository.k_name_select(chatDTO.getKakaoId());
-            chatDTO.setSender(chatService.maskName(name));*/
-            System.out.println(chatDTO);
-        }
 
         Collections.reverse(joined);
         return joined;

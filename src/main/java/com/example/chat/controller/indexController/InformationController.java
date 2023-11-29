@@ -31,7 +31,7 @@ public class InformationController {
         for(ShowInfoDTO showInfoDTO : list) {
             showInfoDTO.setReply(String.valueOf(chatRepository.countByRoomId(showInfoDTO.getRoomId())));
             showInfoDTO.setOpened(true);
-            System.out.println(showInfoDTO);
+            //System.out.println(showInfoDTO);
         }
 
         return list;

@@ -89,6 +89,9 @@ public class InformationService {
         List<InformationEntity> list = informationRepository.findAll();
 
         // findAll에서 Entity를 DTO로 변환하는 과정
+        // null 값 default값 생각하기/ DB설계 not null 생각
+
+
         return list.stream()
                 .map(
                         l -> new ShowInfoDTO(l.getRoomId(), l.getPro(), l.getCon(), l.getTopic(),l.getCreatedDate(),Integer.parseInt(l.getPeriod()))

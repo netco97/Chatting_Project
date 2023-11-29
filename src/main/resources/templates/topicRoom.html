@@ -236,7 +236,7 @@
                     conPercentage.innerText = (response.conTotal / (response.proTotal + response.conTotal) * 100).toFixed(2);
 
                 }
-                else if (response.isSuccess == 'fail') {
+                else if (response.isSuccess == 'fail' && response.kakaoId == kakaoId) {
                     showAlert("경고", response.error);
                 }
 

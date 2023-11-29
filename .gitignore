@@ -66,5 +66,4 @@ yarn-debug.log*
 yarn-error.log*
 
 # properties
-
-/src/main/resources/application.properties
+application.properties

@@ -94,7 +94,7 @@
                 </div>
 
                 <div th:if="${session.isLoggedIn == null ? true : false}">
-                    <a href= "https://kauth.kakao.com/oauth/authorize?client_id=e174dd79d6f23ded9d7887f7157b726c&redirect_uri=http%3a%2f%2flocalhost%3a8080%2flogin%2fkakao&response_type=code" class="flex items-center text-white hover:text-gray-300">
+                    <a href= "https://kauth.kakao.com/oauth/authorize?client_id=e174dd79d6f23ded9d7887f7157b726c&redirect_uri=http://144.24.64.77:8080/login/kakao&response_type=code" class="flex items-center text-white hover:text-gray-300">
                         <img src="https://cdn.imweb.me/upload/S20210304872ba49a108a8/89a68d1e3674a.png" alt="Kakao Logo"
                              class="w-8 h-8 mr-2" />
                         <span class="flex-grow">카카오 로그인</span>
@@ -124,7 +124,6 @@
     closeMenu.addEventListener("click", () => {
         menuContainer.classList.add("translate-x-full");
     });
-    const data = getRoomInformations();
 
     function showModal() {
         document.getElementById('confirmModal').classList.remove('hidden');
@@ -145,17 +144,30 @@
         hideModal();
     });
 
-    getRoomInformations();
-    getUserInfo([[${session.kakaoId}]]);
+
+
+    document.addEventListener('DOMContentLoaded', function() {
+        getRoomInformations();
+        getUserInfo('[[${session.kakaoId}]]');
+    });
+
 
 </script>
 <script th:if="${session.isAdmin}">
     // 관리자 사용자만을 위한 JavaScript 함수
-function adminFunction() {
-    const topic = document.querySelector('#newTopic').value;
-    const period = document.querySelector('#newPeriod').value;
-    createTopic(topic, period);
-}
+    let lastExecuted = 0;
+        function adminFunction() {
+        const now = Date.now();
+
+        if (now - lastExecuted > 500) {
+            const topic = document.querySelector('#newTopic').value;
+            const period = document.querySelector('#newPeriod').value;
+            document.querySelector('#newTopic').value = '';
+            document.querySelector('#newPeriod').value = '';
+            createTopic(topic, period);
+        }
+
+    }
 </script>
 
 </html>
