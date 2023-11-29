@@ -6,10 +6,15 @@
     <title>Colosseum</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="/webjars/jquery/jquery.min.js"></script>
+    <script src="card.js"></script>
     <script>
         const roomId = `[[${roomId}]]`;
         const kakaoId = `[[${session.kakaoId}]]`;
-        console.log("roomId 확인 : " + roomId);
+        const topic_date = `[[${date}]]`;
+        const topic_period = parseInt(`[[${period}]]`);
+        const topic_dday = getDday(addDays(topic_date, topic_period));
+        const inTime = topic_dday[1] == '-' ? true : false;
+        //console.log("roomId 확인 : " + roomId);
     </script>
     <style>
         body {
@@ -202,12 +207,12 @@
     var stompClient = Stomp.over(socket);
 
     stompClient.connect({}, function (frame) {
-        console.log('Connected: ' + frame);
+        //console.log('Connected: ' + frame);
         stompClient.subscribe("/sub/topic/" + roomId, function (message) {
             let response = JSON.parse(message.body);
-            console.log(response);
+            //console.log(response);
             if (response.type == 'VOTE') {
-                console.log('VOTE!!!');
+                //console.log('VOTE!!!');
                 if (response.isSuccess == 'success') {
                     const proGage = document.querySelector('.proGage');
                     const conGage = document.querySelector('.conGage');
@@ -227,8 +232,8 @@
                     } else {
                         conGage.classList.remove("rounded-l-lg");
                     }
-                    proPercentage.innerText = response.proTotal;
-                    conPercentage.innerText = response.conTotal;
+                    proPercentage.innerText = (response.proTotal / (response.proTotal + response.conTotal) * 100).toFixed(2);
+                    conPercentage.innerText = (response.conTotal / (response.proTotal + response.conTotal) * 100).toFixed(2);
 
                 }
                 else if (response.isSuccess == 'fail') {
@@ -236,7 +241,7 @@
                 }
 
             } else if (response.type == 'MSG') {
-                console.log('MSG!!!!');
+                //console.log('MSG!!!!');
                 setMsg(response);
             }
         });
@@ -269,7 +274,12 @@
 </script>
 <script th:if="${session.isLoggedIn != null}">
     function sendVote(isPro) {
-        stompClient.send("/pub/msg", {}, JSON.stringify({ 'type': 'VOTE', 'kakaoId': kakaoId, 'roomId': roomId, 'isPro': isPro }));
+        if(inTime){
+            stompClient.send("/pub/msg", {}, JSON.stringify({ 'type': 'VOTE', 'kakaoId': kakaoId, 'roomId': roomId, 'isPro': isPro }));
+        }
+        else{
+            showAlert("경고", "이미 기한이 지난 주제입니다.");
+        }
     }
     function sendMsg() {
         msg = document.querySelector('.msgInput').value;
@@ -277,8 +287,13 @@
             showAlert("경고", "내용을 입력해주세요.");
         }
         else{
-            document.querySelector('.msgInput').value = '';
-            stompClient.send("/pub/msg", {}, JSON.stringify({ 'type': 'MSG', 'kakaoId': kakaoId, 'roomId': roomId, 'msg': msg }));
+            if(inTime){
+                document.querySelector('.msgInput').value = '';
+                stompClient.send("/pub/msg", {}, JSON.stringify({ 'type': 'MSG', 'kakaoId': kakaoId, 'roomId': roomId, 'msg': msg }));
+            }
+            else{
+                showAlert("경고", "이미 기한이 지난 주제입니다.");
+            }
         }
     }
 </script>

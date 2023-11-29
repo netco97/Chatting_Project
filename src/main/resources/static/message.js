@@ -76,14 +76,14 @@ function msgInitXhr(){
     xhr.send();
     xhr.onload = () => {
         if (xhr.status == 200) {
-            console.log("message success ! !");
+            //console.log("message success ! !");
             const data = JSON.parse(xhr.response);
-            console.log(data);
+            //console.log(data);
             for (item in data) {
                 setMsg(data[item]);
             }
         } else {
-            console.log("fail ! !");
+            //console.log("fail ! !");
         }
     }
 }
@@ -94,15 +94,15 @@ function msgScrollXhr(isPro, count){
     xhr.send();
     xhr.onload = () => {
         if (xhr.status == 200) {
-            console.log("success ! !");
+            //console.log("success ! !");
             const data = JSON.parse(xhr.response);
-            console.log(data);
-            console.log(data[0]);
+            //console.log(data);
+            //console.log(data[0]);
             for (item in data) {
                 prependMsg(data[item]);
             }
         } else {
-            console.log("fail ! !");
+            //console.log("fail ! !");
         }
     }
 }

@@ -113,7 +113,7 @@
 <script src="card.js"></script>
 <script src="load.js"></script>
 <script>
-    console.log(`[[${session.userId}]]`);
+    //console.log(`[[${session.userId}]]`);
     const menuToggle = document.getElementById("menuToggle");
     const closeMenu = document.getElementById("closeMenu");
     const menuContainer = document.querySelector(".menu-container");
@@ -124,6 +124,7 @@
     closeMenu.addEventListener("click", () => {
         menuContainer.classList.add("translate-x-full");
     });
+    const data = getRoomInformations();
 
     function showModal() {
         document.getElementById('confirmModal').classList.remove('hidden');

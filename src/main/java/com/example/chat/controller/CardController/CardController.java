@@ -43,6 +43,8 @@ public class CardController {
         model.addAttribute("view_pro_rate",pro_rate);
         model.addAttribute("view_con_rate",con_rate);
         model.addAttribute("roomId", roomId);
+        model.addAttribute("date",result.get().getCreatedDate());
+        model.addAttribute("period",result.get().getPeriod());
 
         return "topicRoom.html";
     }

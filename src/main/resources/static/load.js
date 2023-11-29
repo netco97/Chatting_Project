@@ -7,10 +7,10 @@ function createTopic(topic, period){
     xhr.send(formData);
     xhr.onload = () =>{
         if (xhr.status == 200){
-            console.log("topic create success ! !");
+            //console.log("topic create success ! !");
         }
         else{
-            console.error("topic create fail ! !", xhr.statusText);
+            //console.error("topic create fail ! !", xhr.statusText);
         }
     };
 }
@@ -21,12 +21,12 @@ function getUserInfo(kakaoId){
     xhr.send();
     xhr.onload = () => {
         if (xhr.status == 200) {
-            console.log("success ! !");
+            //console.log("success ! !");
             const data = JSON.parse(xhr.response);
             document.querySelector('#nor').innerText = data['nor']; //댓글 수 기입
             document.querySelector('#nov').innerText = data['nov']; //투표 수 기입
         } else {
-            console.log("fail ! !");
+            //console.log("fail ! !");
         }
     }
 }

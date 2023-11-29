@@ -1,13 +1,13 @@
 function createCard(data, deadline, dday) {
-    console.log(data);
+    //console.log(data);
     return `
-    <div class="w-full card ${dday[1] == '+' ? 'blur-sm ' : ' '}" topic-id="${data.roomId}" onclick="window.location.href='topicRoom?roomId='+'${data.roomId}'">
+    <div class="w-full card" topic-id="${data.roomId}" onclick="window.location.href='topicRoom?roomId='+'${data.roomId}'">
 
     <div class="w-full h-64 bg-gray-300 rounded-lg dark:bg-gray-600 flex items-center">
       <div class="w-full h-64 bg-white dark:bg-zinc-800 h-52 rounded-lg">
         <div class="flex flex-col items-center justify-evenly h-full p-3">
           <h4 class="text-xl font-bold text-navy-700 text-black dark:text-white  text-center mt-3 w-full">
-            ${data.topic}
+            ${dday[1] == '+' ? '(만료)' : ''}${data.topic}
           </h4>
           <div class="w-full h-6 bg-gray-200 rounded-full dark:bg-gray-700">
             <div class="h-6 bg-blue-600 rounded-full dark:bg-blue-500" style="width: ${(data.pros / (data.pros + data.cons) * 100).toFixed(2)}%;"></div>
@@ -82,11 +82,11 @@ function getRoomInformations(){
     xhr.send();
     xhr.onload = () => {
         if (xhr.status == 200) {
-            console.log("success ! !");
+            //console.log("success ! !");
             let data = JSON.parse(xhr.response);
             setCards(data);
         } else {
-            console.log("fail ! !");
+            //console.log("fail ! !");
         }
     }
 }
@@ -94,7 +94,7 @@ function getRoomInformations(){
 function addDays(date, period) {
     var newDate = new Date(date);
     newDate.setDate(newDate.getDate() + period);
-    console.log(newDate.getFullYear());
+    //console.log(newDate.getFullYear());
     return newDate.getFullYear() + '-' + (newDate.getMonth() + 1).toString().padStart(2, '0') + '-' + newDate.getDate().toString().padStart(2, '0');
 }
 
