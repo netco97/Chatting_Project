@@ -1,4 +1,4 @@
-package com.example.chat.config;
+/*package com.example.chat.config;
 
 import java.util.Collections;
 
@@ -25,4 +25,4 @@ public class ServletConfiguration {
         connector.setPort(serverPortHttp);
         return connector;
     }
-}
+}*/

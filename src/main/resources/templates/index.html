@@ -4,6 +4,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta property="og:url" content="debatearena.me">
+    <meta property="og:title" content="콜로세움">
+    <meta property="og:type" content="website">
+    <meta property="og:image" content="https://cdn.discordapp.com/attachments/830425063836090399/1179762202161451008/colosseum.png?ex=657af62b&is=6568812b&hm=ca574eb86b24eaa9cb2e5e7321790ef4dbbb7e3d2665eb76023de4140ec6e7bd&">
+    <meta property="og:description" content="토론 커뮤니티 : 콜로세움">
     <title>Colosseum</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="/webjars/jquery/jquery.min.js"></script>
@@ -94,7 +99,7 @@
                 </div>
 
                 <div th:if="${session.isLoggedIn == null ? true : false}">
-                    <a href= "https://kauth.kakao.com/oauth/authorize?client_id=e174dd79d6f23ded9d7887f7157b726c&redirect_uri=http://144.24.64.77:8080/login/kakao&response_type=code" class="flex items-center text-white hover:text-gray-300">
+                    <a href= "https://kauth.kakao.com/oauth/authorize?client_id=e174dd79d6f23ded9d7887f7157b726c&redirect_uri=http://debatearena.me/login/kakao&response_type=code" class="flex items-center text-white hover:text-gray-300">
                         <img src="https://cdn.imweb.me/upload/S20210304872ba49a108a8/89a68d1e3674a.png" alt="Kakao Logo"
                              class="w-8 h-8 mr-2" />
                         <span class="flex-grow">카카오 로그인</span>

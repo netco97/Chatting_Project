@@ -53,7 +53,7 @@ public class MemberService {
             sb.append("grant_type=authorization_code");
 
             sb.append("&client_id=e174dd79d6f23ded9d7887f7157b726c"); //본인이 발급받은 key
-            sb.append("&redirect_uri=http://144.24.64.77:8080/login/kakao"); // 본인이 설정한 주소(인코딩함)
+            sb.append("&redirect_uri=http://debatearena.me/login/kakao"); // 본인이 설정한 주소(인코딩함)
 
             sb.append("&code=" + authorize_code);
             bw.write(sb.toString());
