@@ -43,10 +43,16 @@ public class WebSockConfig implements WebSocketMessageBrokerConfigurer {
 ```
 
 ### 특정 유저 메세지 보내기 문제점 발생
-- 1. convertAndSendToUser를 사용하기 위해 불러 오는 객체 SimpleMessagingTemplate은 AbstractMessageSendingTemplate을 상속받는다.
-- 2. AbstractMessageSendingTemplate 은 메시지를 전송하기 위한 header 세팅을 별도로 진행 해준다.
-- 3. SimpleMessagingTemplate 은 Native header가 있을 경우, 같은 header로 return 해주는데 이 때 내가 가지고 있던 헤더가 HashMap 바뀌게 되어 동작을 하지 않는 것이다. 우리가 원래의 header 정보를 사용하고 싶다면, Messageheader 타입의 헤더정보가 필요하다.
-- 4. 즉, 메시지 전송을 위해 헤더 세팅을 별도로 해주어야 정상적으로 메시지를 보낼 수 있다.
+1. convertAndSendToUser를 사용하기 위해 불러 오는 객체 SimpleMessagingTemplate은 AbstractMessageSendingTemplate을 상속받는다.
+2. AbstractMessageSendingTemplate 은 메시지를 전송하기 위한 header 세팅을 별도로 진행 해준다.
+3. SimpleMessagingTemplate 은 Native header가 있을 경우, 같은 header로 return 해주는데 이 때 내가 가지고 있던 헤더가 HashMap 바뀌게 되어 동작을 하지 않는 것이다. 우리가 원래의 header 정보를 사용하고 싶다면, Messageheader 타입의 헤더정보가 필요하다.
+4. 즉, 메시지 전송을 위해 헤더 세팅을 별도로 해주어야 정상적으로 메시지를 보낼 수 있다.
+
+
+
+### Oracle cloud 이용한 배포
+- 블로그 정리 해두었음.
+https://netco97.tistory.com/67
 
 
 
